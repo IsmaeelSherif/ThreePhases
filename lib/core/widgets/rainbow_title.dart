@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 
@@ -11,8 +13,8 @@ class RainbowTitle extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _buildRainbowText(context, AppStrings.appTitle.split(' ')[0]),
-        _buildRainbowText(context, AppStrings.appTitle.split(' ')[1]),
+        _buildRainbowText(context, context.read<AppCubit>().strings[AppStrings.appTitle]!.split(' ')[0]),
+        _buildRainbowText(context, context.read<AppCubit>().strings[AppStrings.appTitle]!.split(' ')[1]),
       ],
     );
   }

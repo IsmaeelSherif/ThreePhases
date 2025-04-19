@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:three_phases/core/app_cupit/app_cubit.dart';
+import 'package:three_phases/core/enums/game_enums.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
@@ -18,10 +21,13 @@ class HomeView extends StatelessWidget {
             actions: [
               IconButton(
                 icon: const Icon(Icons.language, color: Colors.white),
-                tooltip: 'Change Language', // Optional tooltip
+                tooltip: 'Change Language', 
                 onPressed: () {
-                  // Toggle logic
-                
+                  context.read<AppCubit>().changeLanguage(
+                    context.read<AppCubit>().currentLanguage == GameLanguage.english
+                        ? GameLanguage.arabic
+                        : GameLanguage.english,
+                  );
                 },
               ),
             ],
@@ -35,7 +41,7 @@ class HomeView extends StatelessWidget {
                 children: [
                  const RainbowTitle(),
                   SizedBox(height: height *0.15,),
-                  const PlayButtons()
+                   PlayButtons()
                 ]
               ),
             ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
+import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
 import 'package:three_phases/features/home/data/models/game_model.dart';
 import 'dart:math';
@@ -17,7 +19,6 @@ class PlayButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
           child: ElevatedButton(
@@ -27,7 +28,7 @@ class PlayButtons extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15)
             ),
             onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const HostGameView())),
-            child: Text(AppStrings.hostGame, style: Theme.of(context).textTheme.bodyLarge),
+            child: Text(context.read<AppCubit>().strings[AppStrings.hostGame]!, style: Theme.of(context).textTheme.bodyLarge),
           ),
         ),
         const SizedBox(height: 20),
@@ -39,7 +40,7 @@ class PlayButtons extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15)
             ),
             onPressed: () => _showJoinGameDialog(context),
-            child: Text(AppStrings.joinGame, style: Theme.of(context).textTheme.bodyLarge),
+            child: Text(context.read<AppCubit>().strings[AppStrings.joinGame]!, style: Theme.of(context).textTheme.bodyLarge),
           ),
         ),
       ],
@@ -52,7 +53,7 @@ class PlayButtons extends StatelessWidget {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Join Game'),
+        title: Text(context.read<AppCubit>().strings[AppStrings.joinGame]!),
         content: TextField(
           controller: codeController,
           decoration: const InputDecoration(
@@ -64,7 +65,7 @@ class PlayButtons extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(context.read<AppCubit>().strings[AppStrings.cancel]!),
           ),
           TextButton(
             onPressed: () async {
@@ -91,7 +92,7 @@ class PlayButtons extends StatelessWidget {
               Navigator.pop(context);
               // TODO: Navigate to game screen with the game data
             },
-            child: const Text('Join'),
+            child: Text(context.read<AppCubit>().strings[AppStrings.join]!),
           ),
         ],
       ),
@@ -193,7 +194,6 @@ class PlayButtons extends StatelessWidget {
                     .set(game.toMap());
 
                 Navigator.pop(context);
-                // TODO: Navigate to game screen with the game data
                 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Game created with code: $code')),

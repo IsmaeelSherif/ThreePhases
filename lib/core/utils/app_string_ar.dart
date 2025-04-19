@@ -4,4 +4,7 @@ final Map<String, String> arData = {
   AppStrings.appTitle: "ثلاث مراحل",
   AppStrings.hostGame: "ابدأ اللعبة",
   AppStrings.joinGame: "انضم للعبة",
+  AppStrings.cancel: "الغاء",
+  AppStrings.join: "انضم",
+  AppStrings.changeLanguage: "تغيير اللغة",
 };
