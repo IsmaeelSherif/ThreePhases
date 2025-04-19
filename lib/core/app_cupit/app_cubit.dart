@@ -6,8 +6,7 @@ import 'package:three_phases/core/utils/app_strings_en.dart';
 part 'app_states.dart';
 
 class AppCubit extends Cubit<AppStates> {
-  AppCubit() : super(AppInitial()) {
-  }
+  AppCubit() : super(AppInitial());
 
   // Language related properties and methods
   Map<String, String> _strings = {};

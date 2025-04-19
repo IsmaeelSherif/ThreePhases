@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
-import 'package:three_phases/core/utils/app_colors.dart';
+import 'package:three_phases/features/home/data/models/game_model.dart';
+import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/custtom_button.dart';
 
 class CategoryGrid extends StatefulWidget {
-  const CategoryGrid({super.key});
-
+  const CategoryGrid({super.key, required this.game});
+  final GameModel game;
   @override
   State<CategoryGrid> createState() => _CategoryGridState();
 }
 
 class _CategoryGridState extends State<CategoryGrid> {
-  final Set<GameCategory> gameCategories = Set.from(GameCategory.values);
   @override
   Widget build(BuildContext context) {
     final cubit = context.read<AppCubit>();
@@ -24,28 +24,18 @@ class _CategoryGridState extends State<CategoryGrid> {
           .map(
             (category) => Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-              child: ElevatedButton(
+              child: CusttomButton(
                 onPressed: () {
                   setState(() {
-                    if (gameCategories.contains(category)) {
-                      gameCategories.remove(category);
+                    if (widget.game.categories.contains(category)) {
+                      widget.game.categories.remove(category);
                     } else {
-                      gameCategories.add(category);
+                      widget.game.categories.add(category);
                     }
                   });
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      gameCategories.contains(category) ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  foregroundColor: gameCategories.contains(category) ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: Text(
-                  category.getValue(cubit.currentLanguage),
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 22),
-                ),
+                text: category.getValue(cubit.currentLanguage),
+                isSelected: widget.game.categories.contains(category),
               ),
             ),
           )

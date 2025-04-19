@@ -1,14 +1,15 @@
 import 'package:three_phases/core/enums/game_enums.dart';
 
 class GameModel {
-  final String code;
-  final List<GameCategory> categories;
-  final GameLanguage language;
-
+   String code;
+   List<GameCategory> categories;
+   GameLanguage language;
+   List<String> words;
   GameModel({
     required this.code,
     required this.categories,
     required this.language,
+    this.words = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +17,7 @@ class GameModel {
       'code': code,
       'categories': categories.map((c) => c.name).toList(),
       'language': language.name,
+      'words': words,
     };
   }
 
@@ -27,6 +29,7 @@ class GameModel {
           .toList(),
       language:
           GameLanguage.values.firstWhere((e) => e.name == map['language']),
+      words: (map['words'] as List).map((word) => word as String).toList(),
     );
   }
 }

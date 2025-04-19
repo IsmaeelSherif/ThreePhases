@@ -19,6 +19,8 @@ class AppColors {
     Color(0xFFFFF9C4), 
     Color(0xFFFFCCBC), 
   ];
+  static const kTeal=Color(0xff00BFA5);
+  static const kBrightBLue=Color(0xff448AFF);
   static const kPrimaryColor= Color(0xff8a2be2);
   static const kPrimaryTextColor = Colors.white;
   static const kButtonBackgroundColor = Colors.white;

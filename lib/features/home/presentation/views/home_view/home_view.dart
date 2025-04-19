@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
-import 'package:three_phases/core/utils/app_colors.dart';
-import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/features/home/presentation/views/home_view/widgets/play_buttons.dart';
 import 'package:three_phases/core/widgets/rainbow_title.dart';

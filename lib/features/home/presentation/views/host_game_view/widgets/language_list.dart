@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:three_phases/core/enums/game_enums.dart';
-import 'package:three_phases/core/utils/app_colors.dart';
+import 'package:three_phases/features/home/data/models/game_model.dart';
+import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/custtom_button.dart';
 
 // ignore: must_be_immutable
 class LanguageList extends StatefulWidget {
-   LanguageList({super.key, required this.selectedLanguage});
-   GameLanguage selectedLanguage;
+   const LanguageList({super.key, required this.game});
+   final GameModel game;
 
   @override
   State<LanguageList> createState() => _LanguageListState();
@@ -20,41 +21,27 @@ class _LanguageListState extends State<LanguageList> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
+        CusttomButton(
+          text: GameLanguage.english.value,
           onPressed: (){
             setState(() {
-            widget.selectedLanguage =GameLanguage.english;
+            widget.game.language =GameLanguage.english;
               
             });
-          },
-           style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      widget.selectedLanguage == GameLanguage.english ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  foregroundColor: widget.selectedLanguage == GameLanguage.english ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-          child:  Text(GameLanguage.english.value,style: Theme.of(context).textTheme.bodyLarge,),
+          },         
+          isSelected: widget.game.language == GameLanguage.english,
         ),
         const SizedBox(width: 10),
-        ElevatedButton(
+        CusttomButton(
+          text: GameLanguage.arabic.value,
           onPressed: (){
-            setState  (() {
-            widget.selectedLanguage =GameLanguage.arabic;
+            setState(() {
+            widget.game.language =GameLanguage.arabic;
               
             });
           },
-          style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      widget.selectedLanguage == GameLanguage.arabic ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  foregroundColor: widget.selectedLanguage == GameLanguage.arabic ? AppColors.kPrimaryColor : AppColors.kSeconderyTextColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-          child:  Text(GameLanguage.arabic.value,style: Theme.of(context).textTheme.bodyLarge,),
-        )
+          isSelected: widget.game.language == GameLanguage.arabic,
+        ),
       ],
     );
   }
