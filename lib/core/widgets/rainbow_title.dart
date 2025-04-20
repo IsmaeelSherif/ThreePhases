@@ -5,17 +5,30 @@ import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 
 class RainbowTitle extends StatelessWidget {
-  const RainbowTitle({super.key,});
-
+  const RainbowTitle({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildRainbowText(context, context.read<AppCubit>().strings[AppStrings.appTitle]!.split(' ')[0]),
-        _buildRainbowText(context, context.read<AppCubit>().strings[AppStrings.appTitle]!.split(' ')[1]),
-      ],
+    return BlocBuilder<AppCubit, AppStates>(
+      builder: (context, state) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildRainbowText(
+              context,
+              context.read<AppCubit>().strings[AppStrings.appTitle]!.split(
+                ' ',
+              )[0],
+            ),
+            _buildRainbowText(
+              context,
+              context.read<AppCubit>().strings[AppStrings.appTitle]!.split(
+                ' ',
+              )[1],
+            ),
+          ],
+        );
+      },
     );
   }
 

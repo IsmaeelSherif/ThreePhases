@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:three_phases/core/app_cupit/app_cubit.dart';
+import 'package:three_phases/core/utils/app_routes.dart';
+import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/core/widgets/rainbow_title.dart';
 import 'package:three_phases/core/widgets/snack_bar.dart';
@@ -22,10 +26,10 @@ class HostGameView extends StatelessWidget {
     return BlocConsumer<IntiateGameCubit, IntiateGameState>(
       listener: (context, state) {
         if (state is IntiateGameError) {
-          showSnackBar(context, message: state.message);
+          showSnackBar(context, message: context.read<AppCubit>().strings[state.message]!);
         }
         else if (state is IntiateGameSuccess) {
-          showSnackBar(context, message: "success", backgroundColor: Colors.green);
+         context.push(AppRoutes.hostedGameView, extra: game);
         }
       },
       builder: (context, state) {

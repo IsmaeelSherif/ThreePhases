@@ -13,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  setup();
+  await setup();
   runApp(const MyApp());
 }
 
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..changeLanguage(GameLanguage.english),
+      create: (context) => AppCubit()..initLanguage(),
       child: BlocBuilder<AppCubit, AppStates>(
         builder: (context, state) {
           return MaterialApp.router(

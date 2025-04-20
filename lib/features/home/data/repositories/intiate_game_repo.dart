@@ -1,7 +1,8 @@
+import 'package:dartz/dartz.dart';
+import 'package:three_phases/core/utils/game_error.dart';
 import 'package:three_phases/features/home/data/models/game_model.dart';
 
 abstract class IntiateGameRepo {
-  Future<void> hostGame(GameModel game);
-  Future<GameModel> joinGame(String code);
-  Future<GameModel> joinHostGame(String code);
+  Future<Either<ErrorHandlar, Unit>> hostGame(GameModel game);
+  Future<Either<ErrorHandlar, GameModel>> joinGame(String code);
 }

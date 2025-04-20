@@ -7,4 +7,10 @@ final Map<String, String> arData = {
   AppStrings.cancel: "الغاء",
   AppStrings.join: "انضم",
   AppStrings.changeLanguage: "تغيير اللغة",
+  AppStrings.emptyCategories: "قائمة الفئات لا يمكن ان تكون فارغة",
+  AppStrings.noWordsFound: "لا يوجد كلمات للفئات المختارة",
+  AppStrings.someThingWentWrong: "حدث خطأ",
+  AppStrings.gameNotFoundError: "العبة غير موجودة",
+  AppStrings.enter6DigitCode: "أدخل رقم اللعبة",
+
 };
