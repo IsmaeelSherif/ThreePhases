@@ -10,4 +10,6 @@ class AppStrings {
   static const String someThingWentWrong="Some Thing Went Wrong";
   static const String gameNotFoundError="Game Not Found";
   static const String enter6DigitCode="Enter 6-digit game code";
+  static const String skip="Skip";
+  static const String confirm="Confirm";
 } 

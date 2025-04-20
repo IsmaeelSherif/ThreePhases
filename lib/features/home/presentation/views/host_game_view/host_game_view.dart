@@ -26,7 +26,7 @@ class HostGameView extends StatelessWidget {
     return BlocConsumer<IntiateGameCubit, IntiateGameState>(
       listener: (context, state) {
         if (state is IntiateGameError) {
-          showSnackBar(context, message: context.read<AppCubit>().strings[state.message]!);
+          showSnackBar(context, message: AppStrings.someThingWentWrong);
         }
         else if (state is IntiateGameSuccess) {
          context.push(AppRoutes.hostedGameView, extra: game);
@@ -45,8 +45,8 @@ class HostGameView extends StatelessWidget {
                   const SizedBox(height: 32),
                   Flexible(child: CategoryGrid(game: game)),
                   const SizedBox(height: 12),
-                  LanguageList(game: game),
-                  const SizedBox(height: 24),
+                  // LanguageList(game: game),
+                  // const SizedBox(height: 24),
                   HostButton(game: game),
                 ],
               ),

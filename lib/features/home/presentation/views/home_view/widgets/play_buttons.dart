@@ -16,9 +16,7 @@ class PlayButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppStates>(
-      builder: (context, state) {
-        return Column(
+    return Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Center(
@@ -39,12 +37,12 @@ class PlayButtons extends StatelessWidget {
                     extra: GameModel(
                       code: '',
                       categories: GameCategory.values.toList(),
-                      language: context.read<AppCubit>().currentLanguage,
+                      
                     ),
                   );
                 },
                 child: Text(
-                  context.read<AppCubit>().strings[AppStrings.hostGame]!,
+                  AppStrings.hostGame,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
@@ -64,15 +62,13 @@ class PlayButtons extends StatelessWidget {
                 ),
                 onPressed: () => _showJoinGameDialog(context, context.read<IntiateGameCubit>()),
                 child: Text(
-                  context.read<AppCubit>().strings[AppStrings.joinGame]!,
+                  AppStrings.joinGame,
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),
             ),
           ],
         );
-      },
-    );
   }
 
   Future<void> _showJoinGameDialog(BuildContext context, IntiateGameCubit cubit) async {
@@ -82,11 +78,11 @@ class PlayButtons extends StatelessWidget {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: Text(context.read<AppCubit>().strings[AppStrings.joinGame]!),
+            title: Text(AppStrings.joinGame),
             content: TextField(
               controller: codeController,
               decoration: InputDecoration(
-                hintText: context.read<AppCubit>().strings[AppStrings.enter6DigitCode]!,
+                hintText: AppStrings.enter6DigitCode,
               ),
               maxLength: 6,
               keyboardType: TextInputType.number,
@@ -95,7 +91,7 @@ class PlayButtons extends StatelessWidget {
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: Text(
-                  context.read<AppCubit>().strings[AppStrings.cancel]!,
+                  AppStrings.cancel,
                 ),
               ),
               TextButton(
@@ -104,7 +100,7 @@ class PlayButtons extends StatelessWidget {
                   if (code.length != 6) {
                     showSnackBar(
                       context,
-                      message: context.read<AppCubit>().strings[AppStrings.enter6DigitCode]!,
+                      message: AppStrings.enter6DigitCode,
                     );
                     return;
                   }
@@ -113,7 +109,7 @@ class PlayButtons extends StatelessWidget {
                    Navigator.pop(context);
                   // TODO: Navigate to game screen with the game data
                 },
-                child: Text(context.read<AppCubit>().strings[AppStrings.join]!),
+                child: Text(AppStrings.join),
               ),
             ],
           ),

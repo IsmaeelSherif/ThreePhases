@@ -15,7 +15,6 @@ class CategoryGrid extends StatefulWidget {
 class _CategoryGridState extends State<CategoryGrid> {
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<AppCubit>();
     return GridView.count(
       shrinkWrap: true,
       crossAxisCount: 2,
@@ -34,7 +33,7 @@ class _CategoryGridState extends State<CategoryGrid> {
                     }
                   });
                 },
-                text: category.getValue(cubit.currentLanguage),
+                text: category.value,
                 isSelected: widget.game.categories.contains(category),
               ),
             ),

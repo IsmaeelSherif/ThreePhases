@@ -28,7 +28,7 @@ class HostButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
         ),
         child: Text(
-          context.read<AppCubit>().strings[AppStrings.hostGame]!,
+          AppStrings.hostGame,
           style: Theme.of(
             context,
           ).textTheme.bodyLarge?.copyWith(color: Colors.white),
@@ -42,7 +42,7 @@ class HostButton extends StatelessWidget {
     String? password = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(context.read<AppCubit>().strings[AppStrings.hostGame]!),
+        title: Text(AppStrings.hostGame),
         content: TextField(
           controller: controller,
           maxLength: 6,
@@ -59,14 +59,14 @@ class HostButton extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(null),
-            child: const Text('Skip'),
+            child: const Text(AppStrings.skip),
           ),
           TextButton(
             onPressed: () {
               final value = controller.text;
               Navigator.of(context).pop(value.isEmpty ? null : value);
             },
-            child: const Text('Confirm'),
+            child: const Text(AppStrings.confirm),
           ),
         ],
       ),

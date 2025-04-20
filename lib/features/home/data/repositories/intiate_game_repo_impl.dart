@@ -12,11 +12,13 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
   final firestore = GetIt.instance.get<FirebaseFirestore>();
 
   @override
-  Future<Either<ErrorHandlar, Unit>> hostGame(GameModel game) async {
+  Future<Either<ErrorHandlar, Unit>> hostGame(GameModel game,{bool customWords=false}) async {
+
     try {
       String code;
       bool codeExists;
-        if (game.words.isEmpty) {
+        if (!customWords) {
+          game.words=[];
         // Check if categories list is not empty before querying
         if (game.categories.isEmpty) {
           return left(const ErrorHandlar(AppStrings.emptyCategories));
@@ -24,8 +26,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
 
         final words = await firestore
             .collection('words')
-            .where('category', whereIn: game.categories.map((c) => c.getValue(GameLanguage.english).toLowerCase()).toList())
-            .where('language', isEqualTo: game.language.value)
+            .where('category', whereIn: game.categories.map((c) => c.value).toList())
             .get();
 
         if (words.docs.isEmpty) {

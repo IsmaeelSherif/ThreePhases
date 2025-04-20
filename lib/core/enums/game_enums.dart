@@ -1,47 +1,22 @@
 enum GameCategory {
-  food,
-  place,
-  tools,
-  technology,
-  emotions,
-  item,
-  people,
-  art,
-  other;
+  food("Food"),
+  place("Place"),
+  tools("Tools"),
+  technology("Technology"),
+  emotions("Emotions"),
+  item("Item"),
+  people("People"),
+  art("Art"),
+  other("Other"),
+;
 
-  String getValue(GameLanguage language) {
-    switch (language) {
-      case GameLanguage.english:
-        return _categoryValuesEn[this]!;
-      case GameLanguage.arabic:
-        return _categoryValuesAr[this]!;
-    }
-  }
+  final String value;
+  const GameCategory(this.value);
 }
 
-const Map<GameCategory, String> _categoryValuesEn = {
-  GameCategory.food: "Food",
-  GameCategory.place: "Places",
-  GameCategory.tools: "Tools",
-  GameCategory.technology: "Technology",
-  GameCategory.emotions: "Emotions",
-  GameCategory.item: "Items",
-  GameCategory.people: "People",
-  GameCategory.art: "Art",
-  GameCategory.other: "Other",
-};
 
-const Map<GameCategory, String> _categoryValuesAr = {
-  GameCategory.food: "طعام",
-  GameCategory.place: "أماكن",
-  GameCategory.tools: "أدوات",
-  GameCategory.technology: "تكنولوجيا",
-  GameCategory.emotions: "عواطف",
-  GameCategory.item: "أشياء",
-  GameCategory.people: "أشخاص",
-  GameCategory.art: "فن",
-  GameCategory.other: "أخرى",
-};
+
+
 
 enum GameLanguage {
   english("English"),

@@ -21,7 +21,7 @@ class HomeView extends StatelessWidget {
     return BlocConsumer<IntiateGameCubit, IntiateGameState>(
       listener: (context, state) {
         if (state is IntiateGameError) {
-          showSnackBar(context, message: context.read<AppCubit>().strings[state.message]!);
+          showSnackBar(context, message: state.message);
         }
         else if(state is IntiateGameSuccess) {
           context.push(AppRoutes.joinView, extra: state.game);
@@ -30,31 +30,7 @@ class HomeView extends StatelessWidget {
       builder: (context, state) {
         return ModalProgressHUD(
           inAsyncCall: state is IntiateGameLoading,
-          child: GradientScaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent, // Make AppBar transparent
-              elevation: 0,
-              actions: [
-                BlocBuilder<AppCubit, AppStates>(
-                  builder: (context, state) {
-                    return IconButton(
-                      icon: const Icon(Icons.language, color: Colors.white),
-                      tooltip:
-                          context.read<AppCubit>().strings[AppStrings
-                              .changeLanguage],
-                      onPressed: () {
-                        context.read<AppCubit>().changeLanguage(
-                          context.read<AppCubit>().currentLanguage ==
-                                  GameLanguage.english
-                              ? GameLanguage.arabic
-                              : GameLanguage.english,
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
+          child: GradientScaffold(    
             body: SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.only(top: height * 0.05),
