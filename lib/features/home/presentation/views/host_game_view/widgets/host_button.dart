@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/features/home/data/models/game_model.dart';
@@ -73,6 +72,7 @@ class HostButton extends StatelessWidget {
     );
 
    game.password=password;
+      // ignore: use_build_context_synchronously
       context.read<IntiateGameCubit>().hostGame(game);
     }
   }

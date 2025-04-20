@@ -1,30 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-Future<void> insertWordsToFirestore() async {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final CollectionReference words = firestore.collection('words');
-
-  // Helper function to insert words from a list
-  Future<void> insertWordList(List<String> englishList, List<String> arabicList, String category) async {
-    // Insert English words
-    for (String word in englishList) {
-      await words.add({
-        'word': word,
-        'language': 'English',
-        'category': category,
-      });
-    }
-
-    // Insert Arabic words
-    for (String word in arabicList) {
-      await words.add({
-        'word': word,
-        'language': 'Arabic',
-        'category': category,
-      });
-    }
-  }
-    List<String> placesEng = [
+import 'package:get_it/get_it.dart';
+class WordIneserter {
+  List<String> placesEng = [
   "Airport",
   "Bank",
   "Hospital",
@@ -781,17 +758,33 @@ List<String> otherArabic = [
 ];
 
     
+
+Future<void> insertWordsToFirestore() async {
+  final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
+  final CollectionReference words = firestore.collection('words');
+
+  // Helper function to insert words from a list
+  Future<void> insertWordList(List<String> englishList, String category) async {
+    // Insert English words
+    for (String word in englishList) {
+      await words.add({
+        'EnglishWord': word,      
+        'category': category,
+      });
+    }
+  }
+
   // Insert all word categories
   try {
-    await insertWordList(placesEng, placesArabic, 'places');
-    await insertWordList(peopleEng, peopleArabic, 'people');
-    await insertWordList(emotionsEng, emotionsArabic, 'emotions');
-    await insertWordList(technologyEng, technologyArabic, 'technology');
-    await insertWordList(artEng, artArabic, 'art');
-    await insertWordList(foodEng, foodArabic, 'food');
-    await insertWordList(toolsEng, toolsArabic, 'tools');
-    await insertWordList(itemsEng, itemsArabic, 'items');
-    await insertWordList(otherEng, otherArabic, 'other');
+    await insertWordList(placesEng, 'places');
+    await insertWordList(peopleEng, 'people');
+    await insertWordList(emotionsEng, 'emotions');
+    await insertWordList(technologyEng, 'technology');
+    await insertWordList(artEng, 'art');
+    await insertWordList(foodEng, 'food');
+    await insertWordList(toolsEng, 'tools');
+    await insertWordList(itemsEng, 'items');
+    await insertWordList(otherEng, 'other');
     
     // ignore: avoid_print
     print('Successfully inserted all words into Firestore');
@@ -800,3 +793,22 @@ List<String> otherArabic = [
     print('Error inserting words: $e');
   }
 } 
+
+Future<void> insertNewLanguage(List<List<String>> englishLists, List<List<String>> arabicLists) async {
+  final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
+  final CollectionReference words = firestore.collection('words');
+  for( int i = 0; i < englishLists.length; i++) {
+    for(int j=0; j<englishLists[i].length; j++) {
+      final QuerySnapshot result = await words
+          .where('EnglishWord', isEqualTo: englishLists[i][j])
+          .get();
+      
+      for (final doc in result.docs) {
+        await doc.reference.update({
+          'ArabicWord': arabicLists[i][j]
+        });
+      }
+    }
+  }
+}
+}

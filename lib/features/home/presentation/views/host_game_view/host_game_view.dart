@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/utils/app_routes.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
@@ -12,7 +11,6 @@ import 'package:three_phases/features/home/data/models/game_model.dart';
 import 'package:three_phases/features/home/presentation/mangers/intiate_game/intiate_game_cubit.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/category_grid.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/host_button.dart';
-import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/language_list.dart';
 
 class HostGameView extends StatelessWidget {
   const HostGameView({super.key, required this.game});

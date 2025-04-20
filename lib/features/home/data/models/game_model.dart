@@ -1,10 +1,11 @@
 import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/features/home/data/models/words_model.dart';
 
 class GameModel {
   String code;
   List<GameCategory> categories;
 
-  List<String> words;
+  List<WordsModel> words;
   String? password;
 
   GameModel({
@@ -18,7 +19,7 @@ class GameModel {
     return {
       'code': code,
       'categories': categories.map((c) => c.value).toList(),
-      'words': words,
+      'words': words.map((word) => word.toMap()).toList(),
       'password': password,
     };
   }
@@ -29,7 +30,7 @@ class GameModel {
       categories: (map['categories'] as List)
           .map((c) => GameCategory.values.firstWhere((e) => e.name == c))
           .toList(),
-      words: (map['words'] as List).map((word) => word as String).toList(),
+      words: (map['words'] as List).map((word) => word as WordsModel).toList(),
       password: map['password'],
     );
   }

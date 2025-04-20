@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
-import 'package:three_phases/core/app_cupit/app_cubit.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
 import 'package:three_phases/core/widgets/snack_bar.dart';
 import 'package:three_phases/features/home/data/models/game_model.dart';
@@ -107,7 +105,7 @@ class PlayButtons extends StatelessWidget {
                   cubit.joinGame(code);
               
                    Navigator.pop(context);
-                  // TODO: Navigate to game screen with the game data
+
                 },
                 child: Text(AppStrings.join),
               ),
