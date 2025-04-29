@@ -9,9 +9,9 @@ class WordsModel {
   });
   factory WordsModel.fromMap(Map<String, dynamic> map) {
     return WordsModel(
-      englishWord: map['EnglishWord'],
-      arabicWord: map['ArabicWord'],
-      category: map['category'],
+      englishWord: map['EnglishWord'] ?? '',
+      arabicWord: map['ArabicWord'] ?? '',
+      category: map['category'] ?? '',
     );
   }
   Map<String, dynamic> toMap() {
@@ -20,5 +20,10 @@ class WordsModel {
       'ArabicWord': arabicWord,
       'category': category,
     };
+  }
+
+  @override
+  String toString() {
+    return 'WordsModel{englishWord: $englishWord, arabicWord: $arabicWord, category: $category}';
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
-import 'package:three_phases/features/home/data/models/game_model.dart';
+import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/features/home/presentation/mangers/intiate_game/intiate_game_cubit.dart';
 
 class HostButton extends StatelessWidget {
@@ -11,15 +11,17 @@ class HostButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit=context.read<IntiateGameCubit>();
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [AppColors.kBrightBLue, AppColors.kTeal],
+          colors: [AppColors.kBrightBlue, AppColors.kTeal],
         ),
+        // color: AppColors.kPrimaryColor,
         borderRadius: BorderRadius.circular(8),
       ),
       child: ElevatedButton(
-        onPressed: () => _showPasswordDialog(context),
+        onPressed: () => _showPasswordDialog(context,cubit),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent,
           shadowColor: Colors.transparent,
@@ -36,12 +38,14 @@ class HostButton extends StatelessWidget {
     );
   }
   
-  Future<void> _showPasswordDialog(BuildContext context) async {
+  Future<void> _showPasswordDialog(BuildContext context,IntiateGameCubit cubit) async {
     final controller = TextEditingController();
-    String? password = await showDialog<String>(
+    await showDialog<String>(
       context: context,
+      barrierDismissible: true,
       builder: (context) => AlertDialog(
         title: Text(AppStrings.hostGame),
+        
         content: TextField(
           controller: controller,
           maxLength: 6,
@@ -52,28 +56,33 @@ class HostButton extends StatelessWidget {
             border: OutlineInputBorder(),
           ),
           onSubmitted: (value) {
-            Navigator.of(context).pop(value.isEmpty ? null : value);
+            game.password = value.isEmpty ? null : value;
+            cubit.hostGame(game);
+            Navigator.of(context).pop();
           },
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(null),
+            onPressed: () { 
+              game.password= null;
+              cubit.hostGame(game);
+              Navigator.of(context).pop();
+            },
             child: const Text(AppStrings.skip),
           ),
           TextButton(
             onPressed: () {
               final value = controller.text;
-              Navigator.of(context).pop(value.isEmpty ? null : value);
+              game.password = value.isEmpty ? null : value;
+              cubit.hostGame(game);
+              Navigator.of(context).pop();
             },
             child: const Text(AppStrings.confirm),
           ),
         ],
       ),
     );
-
-   game.password=password;
-      // ignore: use_build_context_synchronously
-      context.read<IntiateGameCubit>().hostGame(game);
+  
     }
   }
 

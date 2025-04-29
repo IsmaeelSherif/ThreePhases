@@ -1,0 +1,206 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/core/models/game_model.dart';
+import 'package:three_phases/core/utils/app_colors.dart';
+import 'package:three_phases/core/utils/app_routes.dart';
+import 'package:three_phases/core/utils/app_strings.dart';
+import 'package:three_phases/core/widgets/snack_bar.dart';
+import 'package:three_phases/features/home/presentation/mangers/intiate_game/intiate_game_cubit.dart';
+
+class IntiateGameDialogs {
+  static Future<void> showJoinGameDialog(
+    BuildContext context,
+    IntiateGameCubit cubit,
+  ) async {
+    final codeController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder:
+          (context) => AlertDialog(
+            title: Text(AppStrings.joinGame),
+            content: TextField(
+              controller: codeController,
+              decoration: InputDecoration(
+                hintText: AppStrings.enter6DigitCode,
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
+                border: OutlineInputBorder(),
+              ),
+              maxLength: 6,
+              keyboardType: TextInputType.number,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(AppStrings.cancel),
+              ),
+              TextButton(
+                onPressed: () async {
+                  final code = codeController.text;
+                  if (code.length != 6) {
+                    showSnackBar(context, message: AppStrings.enter6DigitCode);
+                    return;
+                  }
+                  cubit.joinGame(code);
+
+                  Navigator.pop(context);
+                },
+                child: Text(AppStrings.join),
+              ),
+            ],
+          ),
+    );
+  }
+
+  /// Dialog 1: Join Last Game or Join Another Game
+  static Future<void> showInitialJoinDialog(
+    BuildContext context,
+    IntiateGameCubit cubit,
+    String code,
+  ) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              AppStrings.joinGame,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    cubit.joinGame(code);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    AppStrings.joinLastGame,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.kPrimaryColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    IntiateGameDialogs.showJoinGameDialog(context, cubit);
+                  },
+                  child: Text(
+                    AppStrings.joinAnotherGame,
+                    style: TextStyle(color: AppColors.kPrimaryColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+
+  /// Dialog 2: Join Last Game or Host New One
+  static Future<void> showLastOrHostDialog(
+    BuildContext context,
+    IntiateGameCubit cubit,
+    String code,
+  ) async {
+    return showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder:
+          (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Text(
+              AppStrings.hostGame,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            actionsAlignment: MainAxisAlignment.spaceBetween,
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    cubit.joinGame(code, isHost: true);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    AppStrings.joinLastGame,
+                    style: const TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              Center(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.kPrimaryColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    context.push(
+                      AppRoutes.hostView,
+                      extra: GameModel(
+                        code: '',
+                        categories: GameCategory.values.toList(),
+                        wordsCount: 40,
+                        turnTime: 20,
+                      ),
+                    );
+                  },
+                  child: Text(
+                    AppStrings.hostNewGame,
+                    style: TextStyle(color: AppColors.kPrimaryColor),
+                  ),
+                ),
+              ),
+            ],
+          ),
+    );
+  }
+}

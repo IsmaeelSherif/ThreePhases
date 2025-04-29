@@ -1,13 +1,13 @@
-part of 'app_cubit.dart';
+// part of 'app_cubit.dart';
 
-abstract class AppStates {}
+// abstract class AppStates {}
 
-class AppInitial extends AppStates {}
+// class AppInitial extends AppStates {}
 
-class LanguageChangedAr extends AppStates {
+// class LanguageChangedAr extends AppStates {
 
-}
+// }
 
-class LanguageChangedEn extends AppStates {
+// class LanguageChangedEn extends AppStates {
 
-}
+// }

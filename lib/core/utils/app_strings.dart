@@ -3,6 +3,7 @@ class AppStrings {
   static const String hostGame="Host Game";
   static const String joinGame="Join Game";
   static const String cancel="Cancel";
+  static const String canceled="Canceled";
   static const String join="Join";
   static const String changeLanguage="Change Language";
   static const String emptyCategories="Categories list cannot be empty";
@@ -12,4 +13,34 @@ class AppStrings {
   static const String enter6DigitCode="Enter 6-digit game code";
   static const String skip="Skip";
   static const String confirm="Confirm";
+  static const String noEnoughWords="No enough words for selected categories";
+  static const String addToDoneWords="Mark As Done";
+  static const String startTurn="Start Turn";
+  static const String done="Done";
+  static const String turnAvailable="Turn available waiting for player to start and finish it";
+  static const String wordsDone="Words Done";
+  static const String phase="Phase";
+  static const String wordsCount="Words Count";
+  static const String timeLeft="Time Left";
+  static const String nextWord="Next Word";
+  static const String waitingForHost="Waiting for host to start turn...";
+  static const String gameStatus="Game Status";
+  static const String lastHostedGameCode="Last_Hosted_Game";
+  static const String lastJoinedGameCode="Last_Joined_Game";
+  static const String gameFinished="Game Finished";
+  static const String newPhase="New Phase";
+  // Added for dialogs
+  static const String joinLastGame = "Join Last Game";
+  static const String joinAnotherGame = "Join Another Game";
+  static const String hostNewGame = "Host New Game";
+  static const String chooseJoinOption = "How would you like to join?";
+  static const String chooseLastOrHost = "Join last game or host a new one?";
+
+  static const String lastTurnWords = 'Last Turn Words';
+  static const String noWordsInLastTurn = 'No words completed in last turn';
+  static const String wrongPassword="Wrong Password";
+  static const String startTurnConfirmation="Are you sure you want to start the turn?";
+  static const String addToDoneWordsConfirmation="Are you sure you want to mark this word as done?";
+  static const String cancelAddtoDoneWordsConfirmation="Are you sure you want to cancel this word?";
+  static const String cancelAddToDoneWord="Cancel Add To Done Word";
 } 

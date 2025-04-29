@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
-import 'package:three_phases/features/home/data/models/game_model.dart';
+import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/custtom_button.dart';
 
 class CategoryGrid extends StatefulWidget {
@@ -14,6 +14,7 @@ class _CategoryGridState extends State<CategoryGrid> {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       crossAxisCount: 2,
       childAspectRatio: 3,
