@@ -9,6 +9,7 @@ import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class GameSection extends StatefulWidget {
   const GameSection({super.key, required this.updatedGame});
@@ -27,11 +28,14 @@ class _GameSectionState extends State<GameSection> {
   List<int>? _lastTurnDoneWords;
   List<int>? _doneWordIndexes;
   int? _lastWordIndex;
+  late AudioPlayer _audioPlayer;
+
   @override
   void initState() {
     _doneWordIndexes = widget.updatedGame.doneWordIndexes;
     _lastTurnDoneWords = [];
     _lastWordIndex = widget.updatedGame.lastWordIndex;
+    _audioPlayer = AudioPlayer();
     super.initState();
   }
 
@@ -68,8 +72,17 @@ class _GameSectionState extends State<GameSection> {
           _timeLeft--;
         });
       } else {
+        _playRing();
         _finishTurn(game, context);
       }
+    });
+  }
+
+  void _playRing() {
+    _timer?.cancel();
+    _audioPlayer.play(AssetSource('rings/timer.mp3'));
+    Timer(const Duration(seconds: 3), () {
+      _audioPlayer.stop();
     });
   }
 
@@ -127,6 +140,7 @@ class _GameSectionState extends State<GameSection> {
   @override
   void dispose() {
     _timer?.cancel();
+    _audioPlayer.dispose();
     super.dispose();
   }
 
@@ -146,17 +160,17 @@ class _GameSectionState extends State<GameSection> {
         if (!widget.updatedGame.turnAvailable)
           Text(AppStrings.waitingForHost, style: TextStyle(fontSize: 18))
         else if (!_isShowingWord)
-          CusttomTurnButton(
+          CustomTurnButton(
             onPressed: () {
-             GameConfirmationDialogs.showConfirmationDialog(
-              context: context,
-              title: AppStrings.startTurn,
-              content: AppStrings.startTurnConfirmation,
-              game: widget.updatedGame,
-              onConfirm: () {
-                _startTurn(widget.updatedGame);
-              },
-             );
+              GameConfirmationDialogs.showConfirmationDialog(
+                context: context,
+                title: AppStrings.startTurn,
+                content: AppStrings.startTurnConfirmation,
+                game: widget.updatedGame,
+                onConfirm: () {
+                  _startTurn(widget.updatedGame);
+                },
+              );
             },
             text: AppStrings.startTurn,
           )
@@ -219,4 +233,3 @@ class _GameSectionState extends State<GameSection> {
     );
   }
 }
-

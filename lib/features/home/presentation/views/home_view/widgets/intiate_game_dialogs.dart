@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:three_phases/core/enums/game_enums.dart';
 import 'package:three_phases/core/models/game_model.dart';
@@ -25,12 +26,15 @@ class IntiateGameDialogs {
               controller: codeController,
               decoration: InputDecoration(
                 hintText: AppStrings.enter6DigitCode,
-                hintStyle: Theme.of(context).textTheme.bodyMedium,
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
                 border: OutlineInputBorder(),
               ),
               maxLength: 6,
               keyboardType: TextInputType.number,
-              style: Theme.of(context).textTheme.bodyMedium,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
             ),
             actions: [
               TextButton(
@@ -203,4 +207,50 @@ class IntiateGameDialogs {
           ),
     );
   }
+
+  static Future<void> showPasswordDialog(BuildContext context,IntiateGameCubit cubit, GameModel game, {bool customWords = false}) async {
+    final controller = TextEditingController();
+    await showDialog<String>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        title: Text(AppStrings.hostGame),
+        
+        content: TextField(
+          controller: controller,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
+          decoration:  InputDecoration(
+            hintText: 'Enter password (optional)',
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
+            border: OutlineInputBorder(),
+          ),
+          onSubmitted: (value) {
+            game.password = value.isEmpty ? null : value;
+            cubit.hostGame(game, customWords: customWords);
+            Navigator.of(context).pop();
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () { 
+              game.password= null;
+              cubit.hostGame(game, customWords: customWords);
+              Navigator.of(context).pop();
+            },
+            child: const Text(AppStrings.skip),
+          ),
+          TextButton(
+            onPressed: () {
+              final value = controller.text;
+              game.password = value.isEmpty ? null : value;
+              cubit.hostGame(game, customWords: customWords);
+              Navigator.of(context).pop();
+            },
+            child: const Text(AppStrings.confirm),
+          ),
+        ],
+      ),
+    );
+  
+    }
 }

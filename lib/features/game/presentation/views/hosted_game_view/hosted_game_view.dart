@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_routes.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
@@ -11,6 +9,7 @@ import 'package:three_phases/core/models/game_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
+import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_timer.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/last_word_proccess_section.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
 
@@ -47,15 +46,15 @@ class HostedGameView extends StatelessWidget {
             }
 
             final updatedGame = snapshot.data ?? game;
-            if (updatedGame.turnNumber > 3) {
-              final sharedPerf = GetIt.instance.get<SharedPreferences>();
-              sharedPerf.remove(AppStrings.lastHostedGameCode);
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                GoRouter.of(
-                  context,
-                ).pushReplacement(AppRoutes.gameFinishedView);
-              });
-            }
+            // if (updatedGame.turnNumber > 3) {
+            //   final sharedPerf = GetIt.instance.get<SharedPreferences>();
+            //   sharedPerf.remove(AppStrings.lastHostedGameCode);
+            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+            //     GoRouter.of(
+            //       context,
+            //     ).pushReplacement(AppRoutes.gameFinishedView);
+            //   });
+            // }
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -95,7 +94,9 @@ class HostedGameView extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 32.0),
                       child: Column(
                         children: [
-                          CusttomTurnButton(
+                          GameTimer(game: updatedGame),
+                          SizedBox(height: 16.0),
+                          CustomTurnButton(
                             onPressed: () async {
                               if (updatedGame.password != null &&
                                   updatedGame.password!.isNotEmpty) {
@@ -135,7 +136,7 @@ class HostedGameView extends StatelessWidget {
                             text: AppStrings.startTurn,
                           ),
                           SizedBox(height: 16.0),
-                          CusttomTurnButton(
+                          CustomTurnButton(
                             onPressed: () {
                               if (updatedGame.password != null &&
                                   updatedGame.password!.isNotEmpty) {

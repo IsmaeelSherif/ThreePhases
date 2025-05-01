@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:three_phases/core/models/game_model.dart';
+import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
+import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
 
 class WordsDoneView extends StatefulWidget {
   const WordsDoneView({super.key, required this.game});
@@ -15,11 +17,12 @@ class WordsDoneView extends StatefulWidget {
 
 class _WordsDoneViewState extends State<WordsDoneView> {
   late List<int> localDoneWordIndexes;
-
+  late List<int> localLastTurnDoneWords;
   @override
   void initState() {
     super.initState();
     localDoneWordIndexes = List<int>.from(widget.game.doneWordIndexes);
+    localLastTurnDoneWords = List<int>.from(widget.game.lastTurnDoneWords);
   }
 
   @override
@@ -105,6 +108,9 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                                           localDoneWordIndexes.remove(
                                             item["index"],
                                           );
+                                          localLastTurnDoneWords.remove(
+                                            item["index"],
+                                          );
                                         });
                                       },
                                     ),
@@ -127,8 +133,31 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                         ),
                       ),
                       onPressed: () {
-                        widget.game.doneWordIndexes = localDoneWordIndexes;
+                        if(widget.game.password != null && widget.game.password!.isNotEmpty) {
+                          GameConfirmationDialogs.showPasswordConfirmationDialog(
+                            context: context,
+                            game: widget.game,
+                            title: AppStrings.saveDoneWords,
+                            content: AppStrings.saveDoneWordsConfirmation,
+                            onConfirm: () {
+                               widget.game.doneWordIndexes = localDoneWordIndexes;
+                               widget.game.lastTurnDoneWords = localLastTurnDoneWords;
                         context.read<GameCubit>().updateGame(widget.game);
+                            },
+                          );
+                        } else {
+                          GameConfirmationDialogs.showConfirmationDialog(
+                            context: context,
+                            game: widget.game,
+                            title: AppStrings.saveDoneWords,
+                            content: AppStrings.saveDoneWordsConfirmation,
+                            onConfirm: () {
+                              widget.game.doneWordIndexes = localDoneWordIndexes;
+                              widget.game.lastTurnDoneWords = localLastTurnDoneWords;
+                              context.read<GameCubit>().updateGame(widget.game);
+                            },
+                          );
+                        }
                       },
                       label: const Text('Save'),
                     ),

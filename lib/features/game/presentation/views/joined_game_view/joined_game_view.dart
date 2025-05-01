@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:three_phases/core/utils/app_routes.dart';
-import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,15 +41,15 @@ class JoinedGameView extends StatelessWidget {
             }
 
             final updatedGame = snapshot.data ?? game;
-            if (updatedGame.turnNumber > 3) {
-              final sharedPerf = GetIt.instance.get<SharedPreferences>();
-              sharedPerf.remove(AppStrings.lastJoinedGameCode);
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                GoRouter.of(
-                  context,
-                ).pushReplacement(AppRoutes.gameFinishedView);
-              });
-            }
+            // if (updatedGame.turnNumber > 3) {
+            //   final sharedPerf = GetIt.instance.get<SharedPreferences>();
+            //   sharedPerf.remove(AppStrings.lastJoinedGameCode);
+            //   WidgetsBinding.instance.addPostFrameCallback((_) {
+            //     GoRouter.of(
+            //       context,
+            //     ).pushReplacement(AppRoutes.gameFinishedView);
+            //   });
+            // }
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Center(
@@ -62,12 +57,12 @@ class JoinedGameView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: 32),
-                    Text(
-                      "${AppStrings.phase} ${updatedGame.turnNumber} of 3",
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                    ),
+                    // Text(
+                    //   "${AppStrings.phase} ${updatedGame.turnNumber} of 3",
+                    //   style: Theme.of(
+                    //     context,
+                    //   ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                    // ),
                     SizedBox(height: height * .25),
                     GameSection(updatedGame: updatedGame),
                   ],

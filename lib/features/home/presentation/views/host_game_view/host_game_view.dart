@@ -8,6 +8,7 @@ import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/core/widgets/rainbow_title.dart';
 import 'package:three_phases/core/widgets/snack_bar.dart';
 import 'package:three_phases/core/models/game_model.dart';
+import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
 import 'package:three_phases/features/home/presentation/mangers/intiate_game/intiate_game_cubit.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/category_grid.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/game_setting.dart';
@@ -53,16 +54,19 @@ class HostGameView extends StatelessWidget {
                 
                         Gamesetting(game: game),
                         const SizedBox(height: 32),
-                        ElevatedButton(
-                          onPressed: () {
-                            context.push(AppRoutes.customWordsView, extra: game);
-                          },
-                          child: const Text(' Use Custom Words'),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: CustomTurnButton(
+                            onPressed: () {
+                              context.push(AppRoutes.customWordsView, extra: game);
+                            },
+                            text: ' Use Custom Words',
+                          ),
                         ),
                         const SizedBox(height: 16),
                         
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 48),
+                          padding: EdgeInsets.symmetric(horizontal: 32),
                           child: HostButton(game: game)),
                         const SizedBox(height: 24),
                       ]),

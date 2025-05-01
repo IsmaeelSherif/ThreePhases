@@ -19,7 +19,7 @@ class LastWordProccessSection extends StatefulWidget {
 class _LastWordProccessSectionState extends State<LastWordProccessSection> {
   bool showWord = false;
   late bool lastWord;
-  bool isCanceling = false;
+  bool isCanceling = true;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class _LastWordProccessSectionState extends State<LastWordProccessSection> {
   }
 
   void _handleConfirmation(bool value) {
-    if (isCanceling) {
+    if (!isCanceling) {
       if (widget.updatedGame.password != null && widget.updatedGame.password!.isNotEmpty) {
         GameConfirmationDialogs.showPasswordConfirmationDialog(
           context: context,

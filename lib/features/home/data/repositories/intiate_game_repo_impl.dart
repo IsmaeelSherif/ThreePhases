@@ -155,7 +155,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
                 .toList(),
           );
         }
-        game.words.shuffle();
+    
         break;
       case 1:
         final snapshot =
@@ -184,7 +184,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
                 .toList(),
           );
         }
-        game.words.shuffle();
+   
         break;
       case 2:
         final snapshot =
@@ -213,7 +213,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
                 .toList(),
           );
         }
-        game.words.shuffle();
+     
         break;
       case 3:
         final snapshot =
@@ -242,7 +242,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
                 .toList(),
           );
         }
-        game.words.shuffle();
+    
         break;
     }
   }
@@ -261,12 +261,13 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
           return left(const ErrorHandlar(AppStrings.emptyCategories));
         }
         await _generateWord(game);
-      }
       if (game.words.isEmpty) {
         return left(const ErrorHandlar(AppStrings.noWordsFound));
       } else if (game.words.length < game.wordsCount) {
         return left(const ErrorHandlar(AppStrings.noEnoughWords));
       }
+      }
+      game.words.shuffle();
       // Generate and check code
       do {
         final random = Random();
@@ -307,23 +308,8 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
         return left(const ErrorHandlar(AppStrings.gameNotFoundError));
       }
       final game = GameModel.fromMap(gameDoc.data()!);
-      if (game.turnNumber > 3) {
-        final lastJoinedGame = sharedPerf.getString(
-          AppStrings.lastJoinedGameCode,
-        );
-        final lastHostedGame = sharedPerf.getString(
-          AppStrings.lastHostedGameCode,
-        );
-        if (code == lastJoinedGame) {
-          sharedPerf.remove(AppStrings.lastJoinedGameCode);
-        }
-        if (code == lastHostedGame) {
-          sharedPerf.remove(AppStrings.lastHostedGameCode);
-        }
-        return left(const ErrorHandlar(AppStrings.gameFinished));
-      }
+
       if (!isHost) {
-        game.password = null;
       await sharedPerf.setString(AppStrings.lastJoinedGameCode, code);
       }
 

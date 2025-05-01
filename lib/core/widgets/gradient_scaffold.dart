@@ -26,6 +26,7 @@ class GradientScaffold extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: appBar,
+        resizeToAvoidBottomInset: false,
         body: body,
         floatingActionButton: floatingActionButton,
         bottomNavigationBar: bottomNavigationBar,

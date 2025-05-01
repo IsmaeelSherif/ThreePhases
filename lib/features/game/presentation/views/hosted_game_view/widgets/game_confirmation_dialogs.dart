@@ -55,11 +55,13 @@ class GameConfirmationDialogs {
             TextField(
               controller: controller,
               maxLength: 6,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: '6-digit Password',
+                hintText: 'Password',
+                labelStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
               ),
-              keyboardType: TextInputType.number,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
             ),
           ],
         ),

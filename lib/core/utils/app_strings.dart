@@ -43,4 +43,11 @@ class AppStrings {
   static const String addToDoneWordsConfirmation="Are you sure you want to mark this word as done?";
   static const String cancelAddtoDoneWordsConfirmation="Are you sure you want to cancel this word?";
   static const String cancelAddToDoneWord="Cancel Add To Done Word";
+
+  static const String saveDoneWords="Save Done Words";
+
+  static const String saveDoneWordsConfirmation="Are you sure you want to save the updated on done words?";
+  static const String saveChanges = "Save Changes"; 
+static const String saveTimeConfirmation = "Are you sure you want to save the new turn time?";
+static const String turnTime="Turn Time";
 } 

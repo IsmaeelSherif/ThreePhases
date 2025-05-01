@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
-import 'package:three_phases/features/game/presentation/views/game_finished_view/game_finished_view.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/hosted_game_view.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/joined_game_view.dart';
 import 'package:three_phases/features/game/presentation/views/words_done_view/words_done_view.dart';
@@ -17,7 +16,6 @@ class AppRoutes {
   static const String hostView = '/host-game';
   static const String joinView = '/join-game';
   static const String hostedGameView = '/hosted-game';
-  static const String gameFinishedView = '/game-finished';
   static const String homeView = '/';
   static const String wordsDoneView = '/words-done';
   static const String customWordsView = '/custom-words';
@@ -66,12 +64,6 @@ class AppRoutes {
                     GameCubit(),
             child: JoinedGameView(game: game),
           );
-        },
-      ),
-      GoRoute(
-        path: gameFinishedView,
-        builder: (context, state) {
-          return const GameFinishedView();
         },
       ),
       GoRoute(

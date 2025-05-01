@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 
-class CusttomTurnButton extends StatelessWidget {
-  const CusttomTurnButton({
+class CustomTurnButton extends StatelessWidget {
+  const CustomTurnButton({
     super.key,
     required this.onPressed,
     required this.text,
