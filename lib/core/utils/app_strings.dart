@@ -18,6 +18,7 @@ class AppStrings {
   static const String startTurn="Start Turn";
   static const String done="Done";
   static const String turnAvailable="Turn available waiting for player to start and finish it";
+  static const String turnStarted ="Turn Started player is playing right now";
   static const String wordsDone="Words Done";
   static const String phase="Phase";
   static const String wordsCount="Words Count";
@@ -51,4 +52,5 @@ class AppStrings {
 static const String saveTimeConfirmation = "Are you sure you want to save the new turn time?";
 static const String turnTime="Turn Time";
 static const String editTurnTime="Edit Turn Time";
+static const String nextWordConfirmation="Are you sure you want to move to the next word?";
 } 

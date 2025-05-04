@@ -8,7 +8,7 @@ class GameModel {
   int turnNumber ;
   int wordsCount;
   int turnTime;
-  
+  DateTime? turnEndsTime;
   bool turnAvailable;
   bool turnFinished ;
   List<WordsModel> words;
@@ -31,6 +31,7 @@ class GameModel {
      this.doneWordIndexes = const [],
      this.createdAt,
      this.lastTurnDoneWords = const [],
+     this.turnEndsTime,
   });
 
   Map<String, dynamic> toMap() {
@@ -48,7 +49,7 @@ class GameModel {
       'doneWordIndexes': doneWordIndexes,
       'createdAt':createdAt?? DateTime.now(),
       'lastTurnDoneWords': lastTurnDoneWords,
-
+      'turnEndsTime': turnEndsTime,
     };
   }
 
@@ -71,6 +72,7 @@ class GameModel {
       doneWordIndexes: (map["doneWordIndexes"] as List?)?.map((i) => i as int).toList() ?? [],
       createdAt: (map["createdAt"] as Timestamp?)?.toDate(),
       lastTurnDoneWords: (map["lastTurnDoneWords"] as List?)?.map((i) => i as int).toList() ?? [],
+      turnEndsTime: (map["turnEndsTime"] as Timestamp?)?.toDate(),
     );
   }
 

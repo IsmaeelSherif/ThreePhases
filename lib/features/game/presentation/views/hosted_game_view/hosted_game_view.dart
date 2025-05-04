@@ -70,10 +70,14 @@ class HostedGameView extends StatelessWidget {
                                 SizedBox(height: 16.0),
                                 CustomTurnButton(
                                   onPressed: () async {
-                                    if(updatedGame.words.length==updatedGame.doneWordIndexes.length){
-                                      showSnackBar(context, message: "All words have been guessed, Start New Phase");
-                                    }
-                                   else if (updatedGame.password != null &&
+                                    if (updatedGame.words.length ==
+                                        updatedGame.doneWordIndexes.length) {
+                                      showSnackBar(
+                                        context,
+                                        message:
+                                            "All words have been guessed, Start New Phase",
+                                      );
+                                    } else if (updatedGame.password != null &&
                                         updatedGame.password!.isNotEmpty) {
                                       GameConfirmationDialogs.showPasswordConfirmationDialog(
                                         context: context,
@@ -175,10 +179,19 @@ class HostedGameView extends StatelessWidget {
                             ),
                             height: 200,
                             child: Center(
-                              child: Text(
-                                AppStrings.turnAvailable,
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                              child: Column(
+                                children: [
+                                  Text(
+                                    game.turnEndsTime != null
+                                        ? AppStrings.turnStarted
+                                        : AppStrings.turnAvailable,
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  TimeLeftWidget(updatedGame: updatedGame),
+                                ],
                               ),
                             ),
                           ),
@@ -196,7 +209,6 @@ class HostedGameView extends StatelessWidget {
                 ),
                 updatedGame.lastTurnDoneWords.isNotEmpty
                     ? SliverList.separated(
-                      
                       separatorBuilder:
                           (context, index) => const SizedBox(height: 8),
                       itemCount: updatedGame.lastTurnDoneWords.length,
@@ -228,14 +240,71 @@ class HostedGameView extends StatelessWidget {
                         ),
                       ),
                     ),
-              SliverToBoxAdapter(
-                child: SizedBox(height:  32),
-              )
+                SliverToBoxAdapter(child: SizedBox(height: 32)),
               ],
             );
           },
         ),
       ),
+    );
+  }
+}
+
+class TimeLeftWidget extends StatelessWidget {
+  const TimeLeftWidget({
+    super.key,
+    required this.updatedGame,
+  });
+
+  final GameModel updatedGame;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: Stream.periodic(
+        const Duration(seconds: 1),
+      ),
+      builder: (context, snapshot) {
+        if (updatedGame.turnEndsTime == null) {
+          return const SizedBox();
+        }
+    
+        final now = DateTime.now();
+        final end = updatedGame.turnEndsTime!;
+        final difference = end.difference(now);
+    
+        if (difference.isNegative) {
+          updatedGame.turnFinished = true;
+          updatedGame.turnAvailable = false;
+          updatedGame.turnEndsTime = null;
+          context.read<GameCubit>().updateGame(updatedGame);
+          return Text(
+            "Time's up!",
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge
+                ?.copyWith(color: Colors.red),
+          );
+        }
+    
+        final minutes = difference.inMinutes
+            .remainder(60)
+            .toString()
+            .padLeft(2, '0');
+        final seconds = difference.inSeconds
+            .remainder(60)
+            .toString()
+            .padLeft(2, '0');
+    
+        return Text(
+          "${AppStrings.timeLeft}: $minutes:$seconds",
+          textAlign: TextAlign.center,
+          style:
+              Theme.of(
+                context,
+              ).textTheme.bodyLarge,
+        );
+      },
     );
   }
 }
@@ -257,7 +326,7 @@ class HostedGameAppBar extends StatelessWidget {
       floating: false,
       snap: false,
       automaticallyImplyLeading: false,
-      
+
       leading: BackButton(
         color: Colors.white,
         onPressed: () {
@@ -266,30 +335,46 @@ class HostedGameAppBar extends StatelessWidget {
       ),
       title: Text(
         game.code,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontSize: 18,
-              color: Colors.white,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.bodyMedium?.copyWith(fontSize: 18, color: Colors.white),
       ),
-      actions: [InkWell(
-        onTap: () {
-          if(!updatedGame.turnAvailable){
-          context.push(
-            AppRoutes.wordsDoneView,
-            extra: updatedGame,
-          );
-          }
-          else{
-            showSnackBar(context, message: "Turn is available for the players wait untill they finish it");
-          }
-        },
-        child: Text(
-          "${AppStrings.wordsDone} ${updatedGame.doneWordIndexes.length}/${updatedGame.wordsCount}",
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(fontSize: 15),
+      actions: [
+        InkWell(
+          onTap: () async{
+            if (!updatedGame.turnAvailable) {
+              if(updatedGame.password ==null || updatedGame.password!.isEmpty){
+              context.push(AppRoutes.wordsDoneView, extra: updatedGame);
+              }
+              else{
+               final bool result= await GameConfirmationDialogs.showPasswordConfirmationDialog(
+                  context: context,
+                  game: updatedGame,
+                  onConfirm: () {
+                  
+           
+                  },
+                  customWords:true
+                );
+                if(result){
+                }
+              }
+            } else {
+              showSnackBar(
+                context,
+                message:
+                    "Turn is available for the players wait untill they finish it",
+              );
+            }
+          },
+          child: Text(
+            "${AppStrings.wordsDone} ${updatedGame.doneWordIndexes.length}/${updatedGame.wordsCount}",
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontSize: 15),
+          ),
         ),
-      ),]
+      ],
     );
   }
 }

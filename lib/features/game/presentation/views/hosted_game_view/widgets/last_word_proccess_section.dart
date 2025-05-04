@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
+import 'package:three_phases/core/widgets/snack_bar.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/show_word.dart';
@@ -42,7 +43,7 @@ class LastWordProccessSection extends StatelessWidget {
             ).textTheme.bodyLarge?.copyWith(color: Colors.white),
             textAlign: TextAlign.center,
           ),
-        ShowWord(updatedGame: updatedGame),
+        // ShowWord(updatedGame: updatedGame),
           Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
@@ -68,23 +69,24 @@ class LastWordProccessSection extends StatelessWidget {
     );
   }
 
-  void _handleConfirmation(bool value, BuildContext context) {
+  void _handleConfirmation(bool value, BuildContext context) async{
+      String word= "${updatedGame.words[updatedGame.lastWordIndex].englishWord} / ${updatedGame.words[updatedGame.lastWordIndex].arabicWord}";
     if (!isCanceling) {
       if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
-        GameConfirmationDialogs.showPasswordConfirmationDialog(
+       final bool result= await GameConfirmationDialogs.showPasswordConfirmationDialog(
           context: context,
           game: updatedGame,
           title: AppStrings.cancelAddToDoneWord,
           content: AppStrings.cancelAddtoDoneWordsConfirmation,
           onConfirm: () {
-
-            updatedGame.doneWordIndexes.remove(updatedGame.lastWordIndex);
-            updatedGame.lastTurnDoneWords.remove(updatedGame.lastWordIndex);
-            context.read<GameCubit>().updateGame(
-              updatedGame,
-            );
+           
           },
+          gameCubit: context.read<GameCubit>(),
+          remove: true,
         );
+        if(result){
+        
+        }
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
@@ -97,32 +99,26 @@ class LastWordProccessSection extends StatelessWidget {
             context.read<GameCubit>().updateGame(
               updatedGame,
             );
+            showSnackBar(context, message: "$word has been removed from done words",backgroundColor: AppColors.kGreen);
           },
         );
       }
     } else {
       if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
-        GameConfirmationDialogs.showPasswordConfirmationDialog(
+       final bool result= await GameConfirmationDialogs.showPasswordConfirmationDialog(
           context: context,
           game: updatedGame,
           title: AppStrings.addToDoneWords,
           content: AppStrings.addToDoneWordsConfirmation,
-          onConfirm: () {
-
-            updatedGame.doneWordIndexes.add(
-              updatedGame.lastWordIndex,
-            );
-            updatedGame.lastTurnDoneWords.add(
-              updatedGame.lastWordIndex,
-            );
-            lastWord =
-                updatedGame.doneWordIndexes.length ==
-                updatedGame.wordsCount;
-            context.read<GameCubit>().updateGame(
-              updatedGame,
-            );
+          onConfirm: () { 
+          
           },
+          gameCubit: context.read<GameCubit>(),
+          remove: false,
         );
+        if(result){
+          
+        }
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
@@ -143,6 +139,7 @@ class LastWordProccessSection extends StatelessWidget {
             context.read<GameCubit>().updateGame(
               updatedGame,
             );
+      showSnackBar(context, message: "$word has been added to done words",backgroundColor: AppColors.kGreen);
           },
         );
       }

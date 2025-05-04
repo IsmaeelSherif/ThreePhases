@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
@@ -144,6 +145,7 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                                widget.game.doneWordIndexes = localDoneWordIndexes;
                                widget.game.lastTurnDoneWords = localLastTurnDoneWords;
                         context.read<GameCubit>().updateGame(widget.game);
+                        context.pop();
                             },
                           );
                         } else {
@@ -156,6 +158,7 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                               widget.game.doneWordIndexes = localDoneWordIndexes;
                               widget.game.lastTurnDoneWords = localLastTurnDoneWords;
                               context.read<GameCubit>().updateGame(widget.game);
+                              context.pop();
                             },
                           );
                         }
@@ -163,6 +166,7 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                       label: const Text('Save'),
                     ),
                   ),
+                   const SizedBox(height: 24),
                 ],
               ),
             ),
