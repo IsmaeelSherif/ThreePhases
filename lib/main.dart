@@ -1,3 +1,5 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:three_phases/core/services/di.dart';
@@ -14,7 +16,10 @@ void main() async {
   await setup();
   // final WordIneserter wordIneserter = WordIneserter();
   // await wordIneserter.intiateWords();
-  runApp(const MyApp());
+  runApp(  DevicePreview(
+    enabled: !kReleaseMode,
+    builder: (context) => MyApp(), // Wrap your app
+  ),);
 } 
 
 class MyApp extends StatelessWidget {

@@ -50,4 +50,5 @@ class AppStrings {
   static const String saveChanges = "Save Changes"; 
 static const String saveTimeConfirmation = "Are you sure you want to save the new turn time?";
 static const String turnTime="Turn Time";
+static const String editTurnTime="Edit Turn Time";
 } 

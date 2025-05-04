@@ -23,6 +23,36 @@ class _GamesettingState extends State<Gamesetting> {
     _wordsCountController.text = widget.game.wordsCount.toString();
   }
 
+  void _changeWordsCount() {
+    final value = _wordsCountController.text;
+    int? v = int.tryParse(value);
+    if (v == null) return;
+    if (v < 1) v = 1;
+    if (v.toString() != value) {
+      _wordsCountController.text = v.toString();
+      _wordsCountController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _wordsCountController.text.length),
+      );
+    }
+    widget.game.wordsCount = v;
+    _countFocusNode.unfocus();
+  }
+
+  void _changeTurnTime() {
+    _timeFocusNode.unfocus();
+    final value = _turnTimeController.text;
+    int? v = int.tryParse(value);
+    if (v == null) return;
+    if (v < 1) v = 1;
+    if (v.toString() != value) {
+      _turnTimeController.text = v.toString();
+      _turnTimeController.selection = TextSelection.fromPosition(
+        TextPosition(offset: _turnTimeController.text.length),
+      );
+    }
+    widget.game.turnTime = v;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,28 +63,13 @@ class _GamesettingState extends State<Gamesetting> {
             child: TextFormField(
               focusNode: _timeFocusNode,
               onTapOutside: (event) {
-                _timeFocusNode.unfocus();
-                final value = _turnTimeController.text;
-                int? v = int.tryParse(value);
-                if (v == null) return;
-                if (v < 2) v = 2;
-                if (v > 60) v = 60;
-                if (v.toString() != value) {
-                  _turnTimeController.text = v.toString();
-                  _turnTimeController.selection = TextSelection.fromPosition(TextPosition(offset: _turnTimeController.text.length));
-                }
-                widget.game.turnTime = v;
+                _changeTurnTime();
+              },
+              onTapUpOutside: (event) {
+                _changeTurnTime();
               },
               onFieldSubmitted: (value) {
-                int? v = int.tryParse(value);
-                if (v == null) return;
-                if (v < 2) v = 2;
-                if (v > 60) v = 60;
-                if (v.toString() != value) {
-                  _turnTimeController.text = v.toString();
-                  _turnTimeController.selection = TextSelection.fromPosition(TextPosition(offset: _turnTimeController.text.length));
-                }
-                widget.game.turnTime = v;
+                _changeTurnTime();
               },
               controller: _turnTimeController,
               style: Theme.of(context).textTheme.bodyLarge,
@@ -65,9 +80,7 @@ class _GamesettingState extends State<Gamesetting> {
                 ).textTheme.bodyLarge?.copyWith(fontSize: 20),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColors.kWhite,
-                  ),
+                  borderSide: BorderSide(color: AppColors.kWhite),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -76,9 +89,7 @@ class _GamesettingState extends State<Gamesetting> {
                 filled: true,
                 fillColor: AppColors.kTransparentWhite,
               ),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: (value) {
                 // Only update controller, don't clamp here
               },
@@ -90,28 +101,13 @@ class _GamesettingState extends State<Gamesetting> {
             child: TextFormField(
               focusNode: _countFocusNode,
               onTapOutside: (event) {
-                _countFocusNode.unfocus();
-                final value = _wordsCountController.text;
-                int? v = int.tryParse(value);
-                if (v == null) return;
-                if (v < 20) v = 20;
-                if (v > 100) v = 100;
-                if (v.toString() != value) {
-                  _wordsCountController.text = v.toString();
-                  _wordsCountController.selection = TextSelection.fromPosition(TextPosition(offset: _wordsCountController.text.length));
-                }
-                widget.game.wordsCount = v;
+                _changeWordsCount();
+              },
+              onTapUpOutside: (event) {
+                _changeWordsCount();
               },
               onFieldSubmitted: (value) {
-                int? v = int.tryParse(value);
-                if (v == null) return;
-                if (v < 20) v = 20;
-                if (v > 100) v = 100;
-                if (v.toString() != value) {
-                  _wordsCountController.text = v.toString();
-                  _wordsCountController.selection = TextSelection.fromPosition(TextPosition(offset: _wordsCountController.text.length));
-                }
-                widget.game.wordsCount = v;
+                _changeWordsCount();
               },
               controller: _wordsCountController,
               style: Theme.of(context).textTheme.bodyLarge,
@@ -122,9 +118,7 @@ class _GamesettingState extends State<Gamesetting> {
                 ).textTheme.bodyLarge?.copyWith(fontSize: 20),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(
-                    color: AppColors.kWhite,
-                  ),
+                  borderSide: BorderSide(color: AppColors.kWhite),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -133,9 +127,7 @@ class _GamesettingState extends State<Gamesetting> {
                 filled: true,
                 fillColor: AppColors.kTransparentWhite,
               ),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               onChanged: (value) {
                 // Only update controller, don't clamp here
               },

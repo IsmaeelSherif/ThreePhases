@@ -5,24 +5,24 @@ import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
+import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/show_word.dart';
 
-class LastWordProccessSection extends StatefulWidget {
-  const LastWordProccessSection({super.key, required this.updatedGame});
+// ignore: must_be_immutable
+class LastWordProccessSection extends StatelessWidget {
+   LastWordProccessSection({super.key, required this.updatedGame});
 
   final GameModel updatedGame;
 
-  @override
-  State<LastWordProccessSection> createState() =>
-      _LastWordProccessSectionState();
-}
-
-class _LastWordProccessSectionState extends State<LastWordProccessSection> {
   bool showWord = false;
+
   late bool lastWord;
-  bool isCanceling = true;
+
+  late bool isCanceling;
 
   @override
   Widget build(BuildContext context) {
+        isCanceling = !updatedGame.doneWordIndexes.contains(updatedGame.lastWordIndex);
+
     return Container(
       margin: const EdgeInsets.all(16.0),
       padding: const EdgeInsets.all(16.0),
@@ -34,6 +34,7 @@ class _LastWordProccessSectionState extends State<LastWordProccessSection> {
       alignment: Alignment.center,
       child: Column(
         children: [
+
           Text(
             "Mark last word as done?",
             style: Theme.of(
@@ -41,31 +42,7 @@ class _LastWordProccessSectionState extends State<LastWordProccessSection> {
             ).textTheme.bodyLarge?.copyWith(color: Colors.white),
             textAlign: TextAlign.center,
           ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                showWord = !showWord;
-              });
-            },
-            child: Text(
-              !showWord ? "Show Word" : "Hide Word",
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Color.fromARGB(255, 22, 17, 168),
-              ),
-            ),
-          ),
-          showWord
-              ? Text(
-                "${widget.updatedGame.words[widget.updatedGame.lastWordIndex].englishWord} / ${widget.updatedGame.words[widget.updatedGame.lastWordIndex].arabicWord}",
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              )
-              : SizedBox(),
-          const SizedBox(height: 16),
+        ShowWord(updatedGame: updatedGame),
           Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
@@ -78,7 +55,7 @@ class _LastWordProccessSectionState extends State<LastWordProccessSection> {
       value: !isCanceling,
       onChanged: (value) {
     
-        _handleConfirmation(value);
+        _handleConfirmation(value, context);
       },
       activeColor: AppColors.kGreen,
       inactiveThumbColor: Colors.red,
@@ -91,92 +68,80 @@ class _LastWordProccessSectionState extends State<LastWordProccessSection> {
     );
   }
 
-  void _handleConfirmation(bool value) {
+  void _handleConfirmation(bool value, BuildContext context) {
     if (!isCanceling) {
-      if (widget.updatedGame.password != null && widget.updatedGame.password!.isNotEmpty) {
+      if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
         GameConfirmationDialogs.showPasswordConfirmationDialog(
           context: context,
-          game: widget.updatedGame,
+          game: updatedGame,
           title: AppStrings.cancelAddToDoneWord,
           content: AppStrings.cancelAddtoDoneWordsConfirmation,
           onConfirm: () {
 
-            widget.updatedGame.doneWordIndexes.remove(widget.updatedGame.lastWordIndex);
-            widget.updatedGame.lastTurnDoneWords.remove(widget.updatedGame.lastWordIndex);
-            setState(() {
-              isCanceling = !value;
-            });
+            updatedGame.doneWordIndexes.remove(updatedGame.lastWordIndex);
+            updatedGame.lastTurnDoneWords.remove(updatedGame.lastWordIndex);
             context.read<GameCubit>().updateGame(
-              widget.updatedGame,
+              updatedGame,
             );
           },
         );
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
-          game: widget.updatedGame,
+          game: updatedGame,
           title: AppStrings.cancelAddToDoneWord,
           content: AppStrings.cancelAddtoDoneWordsConfirmation,
           onConfirm: () {
-            setState(() {
-              isCanceling = !value;
-            });
-            widget.updatedGame.doneWordIndexes.remove(widget.updatedGame.lastWordIndex);
-            widget.updatedGame.lastTurnDoneWords.remove(widget.updatedGame.lastWordIndex);
+            updatedGame.doneWordIndexes.remove(updatedGame.lastWordIndex);
+            updatedGame.lastTurnDoneWords.remove(updatedGame.lastWordIndex);
             context.read<GameCubit>().updateGame(
-              widget.updatedGame,
+              updatedGame,
             );
           },
         );
       }
     } else {
-      if (widget.updatedGame.password != null && widget.updatedGame.password!.isNotEmpty) {
+      if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
         GameConfirmationDialogs.showPasswordConfirmationDialog(
           context: context,
-          game: widget.updatedGame,
+          game: updatedGame,
           title: AppStrings.addToDoneWords,
           content: AppStrings.addToDoneWordsConfirmation,
           onConfirm: () {
 
-            widget.updatedGame.doneWordIndexes.add(
-              widget.updatedGame.lastWordIndex,
+            updatedGame.doneWordIndexes.add(
+              updatedGame.lastWordIndex,
             );
-            widget.updatedGame.lastTurnDoneWords.add(
-              widget.updatedGame.lastWordIndex,
+            updatedGame.lastTurnDoneWords.add(
+              updatedGame.lastWordIndex,
             );
             lastWord =
-                widget.updatedGame.doneWordIndexes.length ==
-                widget.updatedGame.wordsCount;
-            setState(() {
-              isCanceling = !value;
-            });
+                updatedGame.doneWordIndexes.length ==
+                updatedGame.wordsCount;
             context.read<GameCubit>().updateGame(
-              widget.updatedGame,
+              updatedGame,
             );
           },
         );
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
-          game: widget.updatedGame,
+          game: updatedGame,
           title: AppStrings.addToDoneWords,
           content: AppStrings.addToDoneWordsConfirmation,
           onConfirm: () {
    
-            widget.updatedGame.doneWordIndexes.add(
-              widget.updatedGame.lastWordIndex,
+            updatedGame.doneWordIndexes.add(
+              updatedGame.lastWordIndex,
             );
-            widget.updatedGame.lastTurnDoneWords.add(
-              widget.updatedGame.lastWordIndex,
+            updatedGame.lastTurnDoneWords.add(
+              updatedGame.lastWordIndex,
             );
             lastWord =
-                widget.updatedGame.doneWordIndexes.length ==
-                widget.updatedGame.wordsCount;
-            setState(() {
-              isCanceling = !value;
-            });
+                updatedGame.doneWordIndexes.length ==
+                updatedGame.wordsCount;
             context.read<GameCubit>().updateGame(
-              widget.updatedGame,
+              updatedGame,
             );
           },
         );

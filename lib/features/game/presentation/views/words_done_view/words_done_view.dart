@@ -60,6 +60,7 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+     
                   const SizedBox(height: 16),
                   Expanded(
                     child:

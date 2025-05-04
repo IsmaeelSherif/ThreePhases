@@ -10,7 +10,7 @@ import 'package:three_phases/core/widgets/snack_bar.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
 import 'package:three_phases/features/home/presentation/mangers/intiate_game/intiate_game_cubit.dart';
-import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/category_grid.dart';
+import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/category_section.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/game_setting.dart';
 import 'package:three_phases/features/home/presentation/views/host_game_view/widgets/host_button.dart';
 
@@ -46,14 +46,11 @@ class HostGameView extends StatelessWidget {
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
                         const RainbowTitle(),
-                        const SizedBox(height: 32),
-                        SizedBox(
-                          height: height * 0.38,
-                          child: CategoryGrid(game: game),
-                        ),
-                
+                        const SizedBox(height: 48),
+                        CategoryMultiSelectDropdown(game: game),
+                        const SizedBox(height: 48),
                         Gamesetting(game: game),
-                        const SizedBox(height: 32),
+                        const SizedBox(height: 48),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 40),
                           child: CustomTurnButton(
