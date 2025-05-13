@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
 import 'dart:async';
 
 import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/game_section.dart';
@@ -25,9 +28,22 @@ class JoinedGameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return GradientScaffold(
-      appBar: AppBar(title: const Text('Joined Game')),
+      appBar: AppBar(
+        leading: BackButton(
+          onPressed: () {
+            GameConfirmationDialogs.showConfirmationDialog(
+              context: context,
+              game: game,
+              title: AppStrings.leaveGame,
+              content: AppStrings.leaveGameConfirmation,
+              onConfirm: () {
+                context.pop();
+              },
+            );
+          }
+        )
+        ,title:  Text('${AppStrings.gameCode} ${game.code}')),
       body: SafeArea(
         child: StreamBuilder<GameModel>(
           stream: _getGameStream(),
@@ -56,14 +72,14 @@ class JoinedGameView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 32),
+ 
                     // Text(
                     //   "${AppStrings.phase} ${updatedGame.turnNumber} of 3",
                     //   style: Theme.of(
                     //     context,
                     //   ).textTheme.bodyLarge?.copyWith(color: Colors.white),
                     // ),
-                    SizedBox(height: height * .25),
+
                     GameSection(updatedGame: updatedGame),
                   ],
                 ),

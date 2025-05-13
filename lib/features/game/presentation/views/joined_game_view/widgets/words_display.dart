@@ -14,25 +14,26 @@ class WordDisplay extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: 120,
-      decoration: BoxDecoration(
-        color: AppColors.kTransparentWhite,
-        borderRadius: BorderRadius.circular(12),
-      ),
+     
+     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        margin: const EdgeInsets.symmetric(horizontal: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppColors.kButtonBackgroundColorTransparent,
+          border: Border.all(color: AppColors.kWhite),
+        ),
       alignment: Alignment.center,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Text(
-            word != null
-                ? "${word.englishWord} / ${word.arabicWord}"
-                : '',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontSize: 32,
-                  color: Colors.white,
-                ),
-          ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          word != null
+              ? "${word.englishWord}  ${word.arabicWord.isNotEmpty ? " / ${word.arabicWord}" : ""}"
+              : '',
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontSize: 32,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
         ),
       ),
     );

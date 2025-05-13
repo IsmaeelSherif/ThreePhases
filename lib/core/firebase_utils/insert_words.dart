@@ -750,11 +750,12 @@ Future<void> insertMultipleLanguages(Map<String,List<String>> newWords, String c
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
   final CollectionReference words = firestore.collection('words');
   late int lastIndex;
-  await words.orderBy('index').limit(1).get().then((value) {
+  await words.orderBy('index', descending: true).limit(1).get().then((value) {
     if (value.docs.isNotEmpty) {
       lastIndex = value.docs.first['index'] as int;
     }
   });
+  lastIndex++;
   for(int i = 0; i < newWords.values.first.length; i++) {
     final Map<String, dynamic> wordData = {
       'category': category,

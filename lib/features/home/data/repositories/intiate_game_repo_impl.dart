@@ -13,105 +13,8 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
   final firestore = GetIt.instance.get<FirebaseFirestore>();
   final sharedPerf = GetIt.instance.get<SharedPreferences>();
 
-  List<int> _getUniqueRandomNumbers(
-    int m,
-    int n, {
-    Set<int>? existingNumbers = const {},
-  }) {
-    if (m > n) {
-      // If we need more numbers than available range, return all numbers up to n
-      return List.generate(n, (i) => i);
-    }
 
-    if (m > n ~/ 2) {
-      // If we need more than half the range, it's more efficient to generate all numbers
-      // and remove random ones until we have m numbers
-      final List<int> numbers = List.generate(n, (i) => i);
-      numbers.shuffle();
-      return numbers.take(m).toList();
-    } else {
-      // For smaller m, use Set to collect unique random numbers
-      final rand = Random();
-      final Set<int> result = {};
-
-      while (result.length < m) {
-        final num = rand.nextInt(n);
-        if (!(existingNumbers?.contains(num) ?? false)) {
-          result.add(num);
-        }
-      }
-
-      return result.toList();
-    }
-  }
-
-  Future<void> _generateWordsSecondChoice(GameModel game) async {
-    game.words = [];
-
-    // Check if categories list is not empty before querying
-
-    late int lastIndex;
-
-    await firestore
-        .collection('words')
-        .orderBy('index', descending: true)
-        .limit(1)
-        .get()
-        .then((value) {
-          if (value.docs.isNotEmpty) {
-            lastIndex = value.docs.first['index'] as int;
-          }
-        });
-
-    final categoryList =
-        game.categories.map((c) => c.value.toLowerCase()).toList();
-    List<QueryDocumentSnapshot> allDocs = [];
-
-    // Split wordIndexes into chunks and query Firestore in batches
-    final wordIndexes = _getUniqueRandomNumbers(
-      min(game.wordsCount - allDocs.length, lastIndex + 1),
-      lastIndex + 1,
-    );
-    final chuckSize = 10 - categoryList.length;
-    int index = 0;
-    while (allDocs.length < game.wordsCount) {
-      if (index == wordIndexes.length - 1) {
-        wordIndexes.addAll(
-          _getUniqueRandomNumbers(
-            game.wordsCount - allDocs.length,
-            lastIndex + 1,
-            existingNumbers: wordIndexes.toSet(),
-          ),
-        );
-      }
-      List<int> chunk;
-      if (index + chuckSize > wordIndexes.length) {
-        chunk = wordIndexes.sublist(index - 1, wordIndexes.length);
-        index = wordIndexes.length;
-      } else {
-        chunk = wordIndexes.sublist(index, index + chuckSize);
-        index += chuckSize;
-      }
-      final snapshot =
-          await firestore
-              .collection('words')
-              .where('category', whereIn: categoryList)
-              .where('index', whereIn: chunk)
-              .get();
-
-      allDocs.addAll(snapshot.docs);
-    }
-
-    game.words =
-        allDocs
-            .take(game.wordsCount)
-            .map(
-              (doc) => WordsModel.fromMap(doc.data() as Map<String, dynamic>),
-            )
-            .toList();
-  }
-
-  Future<void> _generateWord(GameModel game) async {
+   Future<void> _generateWord(GameModel game) async {
     game.words = [];
     late int lastIndex;
 
@@ -267,6 +170,14 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
         return left(const ErrorHandlar(AppStrings.noEnoughWords));
       }
       }
+      else{
+       
+        try{
+         _insertToUnverifiedWords(game.words.map((e) => e.englishWord).toList());
+      }
+      // ignore: empty_catches
+      catch(e){}
+      }
       game.words.shuffle();
       // Generate and check code
       do {
@@ -334,4 +245,16 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
       return left(const ErrorHandlar(AppStrings.someThingWentWrong));
     }
   }
+
+Future<void> _insertToUnverifiedWords(List <String> newWords) async {
+  final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
+  final CollectionReference unverifiedWords = firestore.collection('unverifiedWords');
+ 
+    final Map<String, dynamic> wordData = {
+      'date': DateTime.now(),
+      'words': newWords,
+    };
+    await unverifiedWords.add(wordData);
+  
+}
 }

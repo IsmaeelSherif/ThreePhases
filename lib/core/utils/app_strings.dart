@@ -30,6 +30,7 @@ class AppStrings {
   static const String lastJoinedGameCode="Last_Joined_Game";
   static const String gameFinished="Game Finished";
   static const String newPhase="New Phase";
+  static const String newPhaseConfirmation="Are you sure you want to start a new phase?";
   // Added for dialogs
   static const String joinLastGame = "Join Last Game";
   static const String joinAnotherGame = "Join Another Game";
@@ -53,4 +54,8 @@ static const String saveTimeConfirmation = "Are you sure you want to save the ne
 static const String turnTime="Turn Time";
 static const String editTurnTime="Edit Turn Time";
 static const String nextWordConfirmation="Are you sure you want to move to the next word?";
+static const String leaveGameConfirmation="Are you sure you want to leave the game?";
+static const String leaveGame="Leave Game";
+static const String gameCode="Game Code:";
+static const String admin="Admin";
 } 

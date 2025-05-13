@@ -1,4 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:three_phases/features/admin/data/models/unverified_word_model.dart';
+import 'package:three_phases/features/admin/presentation/mangers/admin_cubit/admin_cubit.dart';
+import 'package:three_phases/features/admin/presentation/views/unverified_words_view/unverified_words_view.dart';
+import 'package:three_phases/features/admin/presentation/views/verfy_words_view/verify_words_view.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/hosted_game_view.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/joined_game_view.dart';
@@ -19,6 +23,8 @@ class AppRoutes {
   static const String homeView = '/';
   static const String wordsDoneView = '/words-done';
   static const String customWordsView = '/custom-words';
+  static const String unverifiedWordsView = '/unverified-words';
+  static const String verifyWordsView = '/verify-words';
   static final GoRouter _router = GoRouter(
     initialLocation: '/',
     routes: [
@@ -59,9 +65,7 @@ class AppRoutes {
         builder: (context, state) {
           final game = state.extra as GameModel;
           return BlocProvider(
-            create:
-                (context) =>
-                    GameCubit(),
+            create: (context) => GameCubit(),
             child: JoinedGameView(game: game),
           );
         },
@@ -81,8 +85,30 @@ class AppRoutes {
         builder: (context, state) {
           final game = state.extra as GameModel;
           return BlocProvider(
-            create: (context) => IntiateGameCubit(GetIt.instance.get<IntiateGameRepo>()),
+            create:
+                (context) =>
+                    IntiateGameCubit(GetIt.instance.get<IntiateGameRepo>()),
             child: CustomWords(game: game),
+          );
+        },
+      ),
+      GoRoute(
+        path: unverifiedWordsView,
+        builder:
+            (context, state) => BlocProvider(
+              create: (context) => AdminCubit()..getUnverifiedWords(),
+              child: const UnverifiedWordsView(),
+            ),
+      ),
+      GoRoute(
+        path: verifyWordsView,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          final words = extra['words'] as UnverifiedWordModel;
+          final cubit = extra['cubit'] as AdminCubit;
+          return BlocProvider.value(
+            value: cubit,
+            child: VerifyWordsView(words: words),
           );
         },
       ),

@@ -16,22 +16,27 @@ class GameSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     final gameCubit = context.read<GameCubit>();
     final game = updatedGame;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        SizedBox(height: 16),
         Text(
           '${AppStrings.wordsDone}: ${game.doneWordIndexes.length}/${game.wordsCount}',
           style: Theme.of(
             context,
-          ).textTheme.bodyMedium?.copyWith(fontSize: 16, color: Colors.white),
+          ).textTheme.bodyMedium?.copyWith(fontSize: 22, color: Colors.white),
         ),
-        const SizedBox(height: 32),
+         SizedBox(height: height * .22),
         BlocBuilder<GameCubit, GameState>(
           builder: (context, state) {
+             if (!game.turnAvailable && gameCubit.isDialogOpen){
+                Navigator.pop(context);
+             }
             return Column(
               children: [
                 if (!game.turnAvailable)

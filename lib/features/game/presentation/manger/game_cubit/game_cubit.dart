@@ -12,7 +12,7 @@ class GameCubit extends Cubit<GameState> {
 
   final gameRepo = GetIt.instance.get<GameRepo>();
   bool isTurnStarted = false;
-
+  bool isDialogOpen = false;
   void startTurn(GameModel game) {
     // emit(GameLoading());
     isTurnStarted = true;

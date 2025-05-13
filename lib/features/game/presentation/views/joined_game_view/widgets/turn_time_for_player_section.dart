@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/models/game_model.dart';
@@ -16,7 +17,7 @@ class TurnTimer extends StatefulWidget {
 class _TurnTimerState extends State<TurnTimer> {
   late int timeLeft;
   Timer? _timer;
-
+  final _audioPlayer = AudioPlayer();
   @override
   void initState() {
     super.initState();
@@ -46,10 +47,17 @@ class _TurnTimerState extends State<TurnTimer> {
   }
 
   void _finishTurn() {
+    _playRing();
+
     final cubit = context.read<GameCubit>();
     cubit.finishTurn(widget.game,);
   }
-
+  void _playRing() {
+    _audioPlayer.play(AssetSource('rings/timer.mp3'));
+    Timer(const Duration(seconds: 3), () {
+      _audioPlayer.stop();
+    });
+  }
   @override
   void dispose() {
     _timer?.cancel();
@@ -58,12 +66,27 @@ class _TurnTimerState extends State<TurnTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Time Left: $timeLeft s',
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontSize: 22,
-            color: Colors.white,
+    return 
+Container(
+      padding: EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.yellowAccent,
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: const Color(0xffF9A825),
+              width: 2,
+            ),
           ),
-    );
+          child: Center(
+            child: Text(
+                timeLeft.toString(),
+              style: const TextStyle(
+                fontSize: 18,
+                 fontWeight: FontWeight.bold,
+               
+                 ),
+            ),
+          ),
+        );
   }
 }

@@ -6,7 +6,6 @@ import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/core/widgets/snack_bar.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
-import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/show_word.dart';
 
 // ignore: must_be_immutable
 class LastWordProccessSection extends StatelessWidget {

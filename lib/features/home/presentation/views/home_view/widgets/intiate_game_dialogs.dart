@@ -253,4 +253,55 @@ class IntiateGameDialogs {
     );
   
     }
+
+  static Future<void> showAdminPasswordDialog(
+    BuildContext context,
+    
+  ) async {
+    final controller = TextEditingController();
+    await showDialog<String>(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        title: const Text('Admin Access'),
+        content: TextField(
+          controller: controller,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
+          decoration: InputDecoration(
+            hintText: 'Enter Admin Password',
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
+            border: const OutlineInputBorder(),
+          ),
+          obscureText: true,
+          onSubmitted: (value) {
+            if (value == '5l3i5y252j4c') { // You should replace this with a secure password check
+              Navigator.of(context).pop();
+              context.push(AppRoutes.unverifiedWordsView);
+            } else {
+              showSnackBar(context, message: 'Invalid password');
+            }
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(AppStrings.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              final value = controller.text;
+              if (value == '5l3i5y252j4c') { // You should replace this with a secure password check
+                Navigator.of(context).pop();
+                context.push(AppRoutes.unverifiedWordsView);
+              } else {
+                showSnackBar(context, message: 'Invalid password');
+              }
+            },
+            child: const Text(AppStrings.confirm),
+          ),
+        ],
+      ),
+    );
+  }
+
 }

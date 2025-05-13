@@ -4,6 +4,7 @@ import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_confirmation_dialogs.dart';
+import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
 
 class NextWordButton extends StatefulWidget {
   final GameModel game;
@@ -17,13 +18,15 @@ class NextWordButtonState extends State<NextWordButton> {
   DateTime? _lastPressedTime;
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return CustomTurnButton(
       onPressed: () {
         if (_lastPressedTime != null &&
             DateTime.now().difference(_lastPressedTime!) <
                 const Duration(milliseconds: 1500)) {
           return;
         }
+         final gameCubit = context.read<GameCubit>();
+         gameCubit.isDialogOpen=true;
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
           game: widget.game,
@@ -33,16 +36,15 @@ class NextWordButtonState extends State<NextWordButton> {
             final gameCubit = context.read<GameCubit>();
             gameCubit.nextWord(widget.game);
             _lastPressedTime = DateTime.now();
+            gameCubit.isDialogOpen = false;
+          },
+          onCancel: () {
+            gameCubit.isDialogOpen = false;
           },
         );
       },
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-      ),
-      child: Text(
-        AppStrings.nextWord,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 18),
-      ),
+      text: AppStrings.nextWord,
+
     );
   }
 }

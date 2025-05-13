@@ -7,23 +7,19 @@ class RainbowTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildRainbowText(
-              context,
-              AppStrings.appTitle.split(
-                ' ',
-              )[0],
-            ),
-            _buildRainbowText(
-              context,
-              AppStrings.appTitle.split(
-                ' ',
-              )[1],
-            ),
-          ],
-        );
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildRainbowText(
+                context,
+                AppStrings.appTitle
+              ),
+              
+            ],
+          ),
+    );
      
   }
 
@@ -55,6 +51,8 @@ class RainbowTitle extends StatelessWidget {
       );
     }
 
-    return RichText(text: TextSpan(children: spans));
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: RichText(text: TextSpan(children: spans)));
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
@@ -13,28 +12,40 @@ class GameConfirmationDialogs {
     required BuildContext context,
     required GameModel game,
     required VoidCallback onConfirm,
+    VoidCallback? onCancel,
     String title = 'Are you sure?',
     String content = 'This action cannot be undone',
   }) {
     return showDialog(
       context: context,
       barrierDismissible: true,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(content),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-              onConfirm();
-            },
-            child: const Text('Confirm'),
-          ),
-        ],
+      builder: (context) => PopScope(
+        canPop: true,
+        onPopInvoked: (didPop) {
+          if (didPop) {
+            onCancel?.call();
+          }
+        },
+        child: AlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onCancel?.call();
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                onConfirm();
+              },
+              child: const Text('Confirm'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -91,7 +102,7 @@ static Future<bool> showPasswordConfirmationDialog({
               context.push(AppRoutes.wordsDoneView, extra: game);
               }
                onConfirm();
-               } // Call the callback
+            } // Call the callback
              else{
             String word= "${game.words[game.lastWordIndex].englishWord} / ${game.words[game.lastWordIndex].arabicWord}";
             if(remove==true){
