@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:three_phases/core/enums/game_enums.dart';
-import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_routes.dart';
 import 'package:three_phases/core/widgets/gradient_scaffold.dart';
 import 'package:three_phases/core/widgets/snack_bar.dart';
@@ -38,16 +36,7 @@ class HomeView extends StatelessWidget {
           IntiateGameDialogs.showInitialJoinDialog(context, context.read<IntiateGameCubit>(), state.code);
         }
         else if(state is GetLastHostedGameCodeError) {
-          context.push(
-                    AppRoutes.hostView,
-                    extra: GameModel(
-                      code: '',
-                      categories: GameCategory.values.toList(),
-                      wordsCount: 40,
-                      turnTime: 20,
-                      
-                    ),
-                  );
+           IntiateGameDialogs.showLastOrHostDialog(context, context.read<IntiateGameCubit>(), null);
         }
         else if(state is GetLastJoinedGameCodeError) {
           IntiateGameDialogs.showJoinGameDialog(context, context.read<IntiateGameCubit>());

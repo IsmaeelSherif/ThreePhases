@@ -13,6 +13,7 @@ class IntiateGameDialogs {
   static Future<void> showJoinGameDialog(
     BuildContext context,
     IntiateGameCubit cubit,
+    {bool isHost = false}
   ) async {
     final codeController = TextEditingController();
 
@@ -48,7 +49,7 @@ class IntiateGameDialogs {
                     showSnackBar(context, message: AppStrings.enter6DigitCode);
                     return;
                   }
-                  cubit.joinGame(code);
+                  cubit.joinGame(code, isHost: isHost);
 
                   Navigator.pop(context);
                 },
@@ -134,7 +135,7 @@ class IntiateGameDialogs {
   static Future<void> showLastOrHostDialog(
     BuildContext context,
     IntiateGameCubit cubit,
-    String code,
+    String? code,
   ) async {
     return showDialog(
       context: context,
@@ -150,7 +151,7 @@ class IntiateGameDialogs {
             ),
             actionsAlignment: MainAxisAlignment.spaceBetween,
             actions: [
-              Center(
+             code != null ? Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.kPrimaryColor,
@@ -171,7 +172,7 @@ class IntiateGameDialogs {
                     style: const TextStyle(color: Colors.white),
                   ),
                 ),
-              ),
+              ):const SizedBox(height: 10),
               const SizedBox(height: 10),
               Center(
                 child: OutlinedButton(
@@ -199,6 +200,29 @@ class IntiateGameDialogs {
                   },
                   child: Text(
                     AppStrings.hostNewGame,
+                    style: TextStyle(color: AppColors.kPrimaryColor),
+                  ),
+                ),
+              ),
+               const SizedBox(height: 10),
+              Center(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(color: AppColors.kPrimaryColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    IntiateGameDialogs.showJoinGameDialog(context, cubit, isHost: true);
+                  },
+                  child: Text(
+                    AppStrings.joinGameAsHost,
                     style: TextStyle(color: AppColors.kPrimaryColor),
                   ),
                 ),

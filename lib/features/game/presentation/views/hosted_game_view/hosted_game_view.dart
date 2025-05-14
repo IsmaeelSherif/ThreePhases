@@ -349,14 +349,9 @@ class HostedGameAppBar extends StatelessWidget {
                 context.push(AppRoutes.wordsDoneView, extra: updatedGame);
                 }
                 else{
-                  GameConfirmationDialogs.showPasswordConfirmationDialog(
+                  GameConfirmationDialogs.showPasswordConfirmationDialogForDoneWords(
                     context: context,
                     game: updatedGame,
-                    onConfirm: () {
-                    
-             
-                    },
-                    customWords:true
                   );
                 
                 }

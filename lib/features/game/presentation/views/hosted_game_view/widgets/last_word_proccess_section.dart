@@ -72,20 +72,16 @@ class LastWordProccessSection extends StatelessWidget {
       String word= "${updatedGame.words[updatedGame.lastWordIndex].englishWord} / ${updatedGame.words[updatedGame.lastWordIndex].arabicWord}";
     if (!isCanceling) {
       if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
-       final bool result= await GameConfirmationDialogs.showPasswordConfirmationDialog(
+       await GameConfirmationDialogs.showPasswordConfirmationDialogForRemoveDoneWords(
           context: context,
           game: updatedGame,
           title: AppStrings.cancelAddToDoneWord,
           content: AppStrings.cancelAddtoDoneWordsConfirmation,
-          onConfirm: () {
-           
-          },
+
           gameCubit: context.read<GameCubit>(),
           remove: true,
         );
-        if(result){
-        
-        }
+  
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,
@@ -104,20 +100,14 @@ class LastWordProccessSection extends StatelessWidget {
       }
     } else {
       if (updatedGame.password != null && updatedGame.password!.isNotEmpty) {
-       final bool result= await GameConfirmationDialogs.showPasswordConfirmationDialog(
+     await GameConfirmationDialogs.showPasswordConfirmationDialogForRemoveDoneWords(
           context: context,
           game: updatedGame,
           title: AppStrings.addToDoneWords,
           content: AppStrings.addToDoneWordsConfirmation,
-          onConfirm: () { 
-          
-          },
           gameCubit: context.read<GameCubit>(),
           remove: false,
         );
-        if(result){
-          
-        }
       } else {
         GameConfirmationDialogs.showConfirmationDialog(
           context: context,

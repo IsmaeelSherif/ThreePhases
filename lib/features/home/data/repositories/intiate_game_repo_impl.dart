@@ -223,6 +223,9 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
       if (!isHost) {
       await sharedPerf.setString(AppStrings.lastJoinedGameCode, code);
       }
+      else{
+        await sharedPerf.setString(AppStrings.lastHostedGameCode, code);
+      }
 
       return right(game);
     } catch (e) {
