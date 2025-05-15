@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:get_it/get_it.dart';
-import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/core/utils/enums/game_enums.dart';
 import 'package:three_phases/core/utils/game_error.dart';
 import 'package:three_phases/features/admin/data/models/unverified_word_model.dart';
 import 'package:three_phases/features/admin/data/repositories/admin_repo.dart';

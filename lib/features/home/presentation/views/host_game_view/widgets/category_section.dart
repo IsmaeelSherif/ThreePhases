@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/core/utils/enums/game_enums.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 
@@ -70,17 +70,27 @@ class _CategoryMultiSelectDropdownState extends State<CategoryMultiSelectDropdow
         ? 'Select Categories'
         : widget.game.categories.map((e) => e.value).join(', ');
 
-    return InkWell(
-      onTap: _openMultiSelectDialog,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        margin: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: AppColors.kButtonBackgroundColorTransparent,
-          border: Border.all(color: AppColors.kWhite),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal:16),
+          child: Text("Choose Categories",style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),),
         ),
-        child: Text(selectedText,style: Theme.of(context).textTheme.bodyLarge,)),
+        SizedBox(height: 4,),
+        InkWell(
+          onTap: _openMultiSelectDialog,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: AppColors.kButtonBackgroundColorTransparent,
+              border: Border.all(color: AppColors.kWhite),
+            ),
+            child: Text(selectedText,style: Theme.of(context).textTheme.bodyLarge,)),
+        ),
+      ],
     );
   }
 }

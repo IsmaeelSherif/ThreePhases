@@ -1,4 +1,4 @@
-import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/core/utils/enums/game_enums.dart';
 import 'package:three_phases/core/models/words_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

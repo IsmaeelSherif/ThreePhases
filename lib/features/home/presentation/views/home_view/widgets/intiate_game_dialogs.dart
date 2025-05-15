@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:three_phases/core/enums/game_enums.dart';
+import 'package:three_phases/core/utils/enums/game_enums.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_routes.dart';
@@ -192,7 +192,7 @@ class IntiateGameDialogs {
                       AppRoutes.hostView,
                       extra: GameModel(
                         code: '',
-                        categories: GameCategory.values.toList(),
+                        categories: GameCategory.values.where((category) => category != GameCategory.playerWords).toList(),
                         wordsCount: 40,
                         turnTime: 20,
                       ),
