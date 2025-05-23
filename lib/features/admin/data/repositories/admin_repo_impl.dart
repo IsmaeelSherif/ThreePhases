@@ -8,36 +8,41 @@ import 'package:three_phases/features/admin/data/repositories/admin_repo.dart';
 
 class AdminRepoImpl implements AdminRepo {
   @override
-  Future<Either<ErrorHandlar, Unit>> verifyWords(UnverifiedWordModel newWords) async {
-    try {
-      final FirebaseFirestore firestore =
-          GetIt.instance.get<FirebaseFirestore>();
-      final CollectionReference words = firestore.collection('words');
-      final CollectionReference unverifiedWords = firestore.collection('unverifiedWords');
-      late int lastIndex;
-      await words.orderBy('index', descending: true).limit(1).get().then((value) {
-        if (value.docs.isNotEmpty) {
-          lastIndex = value.docs.first['index'] as int;
-        }
-      });
-      lastIndex++;
-      for(int i = 0; i < newWords.words.length; i++){
-       final Map<String, dynamic> wordData = {
-      'category': GameCategory.playerWords.value,
-      'index': lastIndex,
-      "EnglishWord": newWords.words[i],
-      "ArabicWord": "",
-    };  
-    await words.add(wordData);
-    lastIndex++;
-      }
-      await unverifiedWords.doc(newWords.id).delete();
-     
-      return right(unit);
-    } catch (e) {
-      return left(ErrorHandlar(e.toString()));
+Future<Either<ErrorHandlar, Unit>> verifyWords(UnverifiedWordModel newWords) async {
+  try {
+    final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
+    final CollectionReference categoriesCollection = firestore.collection('allWords');
+    final CollectionReference unverifiedWords = firestore.collection('unverifiedWords');
+
+    final DocumentReference categoryDoc = categoriesCollection.doc(GameCategory.customWords.value);
+    final CollectionReference subWordsCollection = categoryDoc.collection('categoryWords');
+
+    // Get the last index in the customWords category
+    int lastIndex = 0;
+    final lastWordSnapshot = await subWordsCollection.orderBy('index', descending: true).limit(1).get();
+    if (lastWordSnapshot.docs.isNotEmpty) {
+      lastIndex = lastWordSnapshot.docs.first['index'] + 1;
     }
+
+    for (int i = 0; i < newWords.words.length; i++) {
+      final wordData = {
+        'category': GameCategory.customWords.value,
+        'index': lastIndex,
+        'EnglishWord': newWords.words[i],
+      };
+      await subWordsCollection.doc(lastIndex.toString()).set(wordData);
+      lastIndex++;
+    }
+
+    // Remove the unverified word entry
+    await unverifiedWords.doc(newWords.id).delete();
+
+    return right(unit);
+  } catch (e) {
+    return left(ErrorHandlar(e.toString()));
   }
+}
+
   
 
 @override

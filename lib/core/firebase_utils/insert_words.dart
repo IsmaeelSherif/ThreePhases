@@ -650,75 +650,99 @@ List<List<String>> otherWords = [
   ["رمز", "Code", "Other"],
   ["خريطة", "Map", "Other"]
 ];
-
-    
 Future<void> intiateWords() async {
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
-  final CollectionReference words = firestore.collection('words');
-  // Helper function to insert words from a list
-  int index=0;
+  final CollectionReference words = firestore.collection('allWords');
+  places.shuffle();
+  people.shuffle();
+  emotions.shuffle();
+  technologies.shuffle();
+  art.shuffle();
+  otherWords.shuffle();
+  tools.shuffle();
+  items.shuffle();
+  food.shuffle();
+  // Combine all categories into a map: category name → word list
+  final Map<String, List<List<String>>> categorizedWords = {
+    'Places': places,
+    'People': people,
+    'Emotions': emotions,
+    'Technologies': technologies,
+    'Art': art,
+    'Other': otherWords,
+    'Tools': tools,
+    'Items': items,
+    'Food': food,
+  };
 
-  Future<void> insertWordList(List<List<String> > allWords) async {
-    // Insert English words
-    for (int i=0;i<allWords.length;i++) {
-      await words.add({
-        'EnglishWord': allWords[i][1],
-        'ArabicWord': allWords[i][0],      
-        'category': allWords[i][2],
-        'index':index
-      });
-      index++;
-    }
-  }
-
-  // Insert all word categories
   try {
-    List<List<String>> allWords=[];
-    allWords.addAll(places);
-    allWords.addAll(people);
-    allWords.addAll(emotions);
-    allWords.addAll(technologies);
-    allWords.addAll(art);
-    allWords.addAll(otherWords);
-    allWords.addAll(tools);
-    allWords.addAll(items);
-    allWords.addAll(food);
-    allWords.shuffle();
-    await insertWordList(allWords);
-    
-    // ignore: avoid_print
-    print('Successfully inserted all words into Firestore');
+    for (var entry in categorizedWords.entries) {
+      final String category = entry.key;
+      final List<List<String>> wordList = entry.value;
+
+      final DocumentReference categoryDoc = words.doc(category);
+      
+
+     
+
+      final CollectionReference subcollection = categoryDoc.collection('categoryWords');
+
+      WriteBatch batch = firestore.batch();
+
+      for (int i = 0; i < wordList.length; i++) {
+        final wordData = {
+          'ArabicWord': wordList[i][0],
+          'EnglishWord': wordList[i][1],
+          'category': wordList[i][2],
+          'index': i
+        };
+
+        final docRef = subcollection.doc(i.toString());
+        batch.set(docRef, wordData);
+      }
+
+      await batch.commit();
+    }
+
+    print('Successfully inserted all categorized words into Firestore');
   } catch (e) {
-    // ignore: avoid_print
     print('Error inserting words: $e');
   }
-} 
-// Future<void> insertWordsToFirestore() async {
+}
+
+// Future<void> intiateWords() async {
 //   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
 //   final CollectionReference words = firestore.collection('words');
-
 //   // Helper function to insert words from a list
-//   Future<void> insertWordList(List<String> englishList, String category) async {
+//   int index=0;
+
+//   Future<void> insertWordList(List<List<String> > allWords) async {
 //     // Insert English words
-//     for (String word in englishList) {
+//     for (int i=0;i<allWords.length;i++) {
 //       await words.add({
-//         'EnglishWord': word,      
-//         'category': category,
+//         'EnglishWord': allWords[i][1],
+//         'ArabicWord': allWords[i][0],      
+//         'category': allWords[i][2],
+//         'index':index
 //       });
+//       index++;
 //     }
 //   }
 
 //   // Insert all word categories
 //   try {
-//     await insertWordList(placesEng, 'places');
-//     await insertWordList(peopleEng, 'people');
-//     await insertWordList(emotionsEng, 'emotions');
-//     await insertWordList(technologyEng, 'technology');
-//     await insertWordList(artEng, 'art');
-//     await insertWordList(foodEng, 'food');
-//     await insertWordList(toolsEng, 'tools');
-//     await insertWordList(itemsEng, 'items');
-//     await insertWordList(otherEng, 'other');
+//     List<List<String>> allWords=[];
+//     allWords.addAll(places);
+//     allWords.addAll(people);
+//     allWords.addAll(emotions);
+//     allWords.addAll(technologies);
+//     allWords.addAll(art);
+//     allWords.addAll(otherWords);
+//     allWords.addAll(tools);
+//     allWords.addAll(items);
+//     allWords.addAll(food);
+//     allWords.shuffle();
+//     await insertWordList(allWords);
     
 //     // ignore: avoid_print
 //     print('Successfully inserted all words into Firestore');
@@ -729,45 +753,83 @@ Future<void> intiateWords() async {
 // } 
 
 
-Future<void> insertNewLanguage(List<String> englishList, List<String> newLanguageList, String newLanguage) async {
+
+Future<void> insertNewLanguage(
+  List<String> englishList,
+  List<String> newLanguageList,
+  String newLanguage,
+  String category,
+) async {
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
-  final CollectionReference words = firestore.collection('words');
-  for( int i = 0; i < englishList.length; i++) {
-    await words
-      .where('EnglishWord', isEqualTo: englishList[i]).limit(1)
-      .get()
-      .then((value) {
-        if (value.docs.isNotEmpty) {
-          value.docs.first.reference.update({
-            newLanguage: newLanguageList[i],
-          });
-        }
+  final CollectionReference subcollection =
+      firestore.collection('allWords').doc(category).collection('categoryWords');
+
+  for (int i = 0; i < englishList.length; i++) {
+    final querySnapshot = await subcollection
+        .where('EnglishWord', isEqualTo: englishList[i])
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      final docRef = querySnapshot.docs.first.reference;
+
+      await docRef.update({
+        newLanguage: newLanguageList[i],
       });
+    } else {
+      print('English word "${englishList[i]}" not found in category "$category"');
+    }
   }
+
+  print('Finished updating documents with new language "$newLanguage" in category "$category"');
 }
 
-Future<void> insertMultipleLanguages(Map<String,List<String>> newWords, String category) async {
+
+
+Future<void> insertMultipleLanguages(Map<String, List<String>> newWords, String category) async {
+  // newWords example:
+  // {EnglishWord: [test1, test2], ArabicWord: [تست1, تست2]}
+  
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
-  final CollectionReference words = firestore.collection('words');
-  late int lastIndex;
-  await words.orderBy('index', descending: true).limit(1).get().then((value) {
-    if (value.docs.isNotEmpty) {
-      lastIndex = value.docs.first['index'] as int;
-    }
-  });
-  lastIndex++;
-  for(int i = 0; i < newWords.values.first.length; i++) {
+  final CollectionReference mainCollection = firestore.collection('allWords');
+  final DocumentReference categoryDoc = mainCollection.doc(category);
+  final CollectionReference subcollection = categoryDoc.collection('categoryWords');
+
+
+
+  // Get last index in subcollection
+  int lastIndex = 0;
+  final querySnapshot = await subcollection.orderBy('index', descending: true).limit(1).get();
+  if (querySnapshot.docs.isNotEmpty) {
+    lastIndex = querySnapshot.docs.first['index'] + 1;
+  }
+
+  // Prepare batch write
+  WriteBatch batch = firestore.batch();
+
+  for (int i = 0; i < newWords.values.first.length; i++) {
     final Map<String, dynamic> wordData = {
       'category': category,
       'index': lastIndex,
     };
 
-    // Add all languages for this word
+    // Fill in all languages
     for (final String language in newWords.keys) {
       wordData[language] = newWords[language]![i];
     }
+
+    final DocumentReference wordDoc = subcollection.doc(lastIndex.toString());
+    batch.set(wordDoc, wordData);
+
     lastIndex++;
-    await words.add(wordData);
+  }
+
+  // Commit batch
+  try {
+    await batch.commit();
+    print('Words successfully added to category "$category".');
+  } catch (e) {
+    print('Error inserting multiple languages: $e');
   }
 }
 

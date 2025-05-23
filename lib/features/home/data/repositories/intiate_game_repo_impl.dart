@@ -13,141 +13,85 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
   final firestore = GetIt.instance.get<FirebaseFirestore>();
   final sharedPerf = GetIt.instance.get<SharedPreferences>();
 
+  Future<void> _generateWord(GameModel game) async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final CollectionReference categoriesCollection = firestore.collection('allWords');
 
-   Future<void> _generateWord(GameModel game) async {
-    game.words = [];
-    late int lastIndex;
+    List<String> categories = game.categories.map((cat) => cat.value).toList();
+    categories.shuffle();
 
-    await firestore
-        .collection('words')
-        .orderBy('index', descending: true)
-        .limit(1)
-        .get()
-        .then((value) {
-          if (value.docs.isNotEmpty) {
-            lastIndex = value.docs.first['index'] as int;
-          }
-        });
+    int totalWords = game.wordsCount;
 
-    final Random random = Random();
-    int wordIndex = random.nextInt(lastIndex + 1);
-    final categoryList = game.categories.map((c) => c.value).toList();
-    int rand = random.nextInt(4);
-    switch (rand) {
-      case 0:
-        final snapshot =
-            await firestore
-                .collection('words')
-                .where('category', whereIn: categoryList)
-                .where('index', isGreaterThan: wordIndex)
-                .limit(game.wordsCount)
-                .get();
-        game.words =
-            snapshot.docs.map((doc) => WordsModel.fromMap(doc.data())).toList();
-        if (game.words.length < game.wordsCount) {
-          final snapshot2 =
-              await firestore
-                  .collection('words')
-                  .where('category', whereIn: categoryList)
-                  .where('index', isLessThan: wordIndex)
-                  .limit(game.wordsCount - game.words.length)
-                  .get();
-          game.words.addAll(
-            snapshot2.docs
-                .map((doc) => WordsModel.fromMap(doc.data()))
-                .toList(),
-          );
-        }
-    
-        break;
-      case 1:
-        final snapshot =
-            await firestore
-                .collection('words')
-                .where('category', whereIn: categoryList)
-                .where('index', isGreaterThan: wordIndex)
-                .orderBy('EnglishWord')
-                .limit(game.wordsCount)
-                .get();
+    // Step 1: Generate random probabilities
+    List<double> randomValues = List.generate(categories.length, (_) => Random().nextDouble());
+    double total = randomValues.reduce((a, b) => a + b);
+    Map<String, double> categoryProbabilities = {};
 
-        game.words =
-            snapshot.docs.map((doc) => WordsModel.fromMap(doc.data())).toList();
-        if (game.words.length < game.wordsCount) {
-          final snapshot2 =
-              await firestore
-                  .collection('words')
-                  .where('category', whereIn: categoryList)
-                  .where('index', isLessThan: wordIndex)
-                  .orderBy('EnglishWord')
-                  .limit(game.wordsCount - game.words.length)
-                  .get();
-          game.words.addAll(
-            snapshot2.docs
-                .map((doc) => WordsModel.fromMap(doc.data()))
-                .toList(),
-          );
-        }
-   
-        break;
-      case 2:
-        final snapshot =
-            await firestore
-                .collection('words')
-                .where('category', whereIn: categoryList)
-                .where('index', isGreaterThan: wordIndex)
-                .orderBy('ArabicWord')
-                .limit(game.wordsCount)
-                .get();
-
-        game.words =
-            snapshot.docs.map((doc) => WordsModel.fromMap(doc.data())).toList();
-        if (game.words.length < game.wordsCount) {
-          final snapshot2 =
-              await firestore
-                  .collection('words')
-                  .where('category', whereIn: categoryList)
-                  .where('index', isLessThan: wordIndex)
-                  .orderBy('ArabicWord')
-                  .limit(game.wordsCount - game.words.length)
-                  .get();
-          game.words.addAll(
-            snapshot2.docs
-                .map((doc) => WordsModel.fromMap(doc.data()))
-                .toList(),
-          );
-        }
-     
-        break;
-      case 3:
-        final snapshot =
-            await firestore
-                .collection('words')
-                .where('category', whereIn: categoryList)
-                .where('index', isGreaterThan: wordIndex)
-                .orderBy('index')
-                .limit(game.wordsCount)
-                .get();
-
-        game.words =
-            snapshot.docs.map((doc) => WordsModel.fromMap(doc.data())).toList();
-        if (game.words.length < game.wordsCount) {
-          final snapshot2 =
-              await firestore
-                  .collection('words')
-                  .where('category', whereIn: categoryList)
-                  .where('index', isLessThan: wordIndex)
-                  .orderBy('index')
-                  .limit(game.wordsCount - game.words.length)
-                  .get();
-          game.words.addAll(
-            snapshot2.docs
-                .map((doc) => WordsModel.fromMap(doc.data()))
-                .toList(),
-          );
-        }
-    
-        break;
+    for (int i = 0; i < categories.length; i++) {
+      categoryProbabilities[categories[i]] = randomValues[i] / total;
     }
+
+    print(categoryProbabilities.toString());
+
+    // Step 2: Fetch random words from each category in parallel
+    List<WordsModel> allWords = [];
+    List<Future<void>> fetchFutures = [];
+    
+    categoryProbabilities.forEach((category, probability) {
+      if(category==categories.last){
+        return;
+      }
+      int wordsForCategory = (probability * totalWords).round();
+      fetchFutures.add(_fetchWordsForCategory(
+        categoriesCollection,
+        category,
+        wordsForCategory,
+        allWords,
+      ));
+    });
+
+    await Future.wait(fetchFutures);
+    final lastCategoryWords=totalWords-allWords.length;
+   await Future.wait([_fetchWordsForCategory(
+        categoriesCollection,
+        categories.last,
+        lastCategoryWords,
+        allWords,
+      )]);
+    game.words = allWords;
+  }
+
+  Future<void> _fetchWordsForCategory(
+    CollectionReference categoriesCollection,
+    String category,
+    int wordsForCategory,
+    List<WordsModel> allWords,
+  ) async {
+    final subWordsCollection = categoriesCollection.doc(category).collection('categoryWords');
+
+    // Get last index
+    final snapshot = await subWordsCollection.orderBy('index', descending: true).limit(1).get();
+    final int lastIndex = snapshot.docs.isNotEmpty ? snapshot.docs.first['index'] as int : 0;
+
+    // Generate unique random indexes
+    final Set<int> randomIndexes = {};
+    final random = Random();
+    while (randomIndexes.length < wordsForCategory && lastIndex > 0) {
+      randomIndexes.add(random.nextInt(lastIndex + 1));
+    }
+
+    // Fetch documents at those indexes
+    final List<Future<DocumentSnapshot>> docFutures = randomIndexes.map((index) {
+      return subWordsCollection.doc(index.toString()).get();
+    }).toList();
+
+    final docs = await Future.wait(docFutures);
+    final words = docs
+        .where((doc) => doc.exists)
+        .map((doc) => WordsModel.fromMap(doc.data()! as Map<String, dynamic>))
+        .toList();
+
+    allWords.addAll(words);
   }
 
   @override
@@ -164,11 +108,11 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
           return left(const ErrorHandlar(AppStrings.emptyCategories));
         }
         await _generateWord(game);
-      if (game.words.isEmpty) {
-        return left(const ErrorHandlar(AppStrings.noWordsFound));
-      } else if (game.words.length < game.wordsCount) {
-        return left(const ErrorHandlar(AppStrings.noEnoughWords));
-      }
+        if (game.words.isEmpty) {
+          return left(const ErrorHandlar(AppStrings.noWordsFound));
+        } else if (game.words.length < game.wordsCount) {
+          return left(const ErrorHandlar(AppStrings.noEnoughWords));
+        }
       }
       else{
        

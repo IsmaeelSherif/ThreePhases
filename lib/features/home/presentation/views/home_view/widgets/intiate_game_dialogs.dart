@@ -192,7 +192,7 @@ class IntiateGameDialogs {
                       AppRoutes.hostView,
                       extra: GameModel(
                         code: '',
-                        categories: GameCategory.values.where((category) => category != GameCategory.playerWords).toList(),
+                        categories: GameCategory.values.where((category) => category != GameCategory.customWords).toList(),
                         wordsCount: 40,
                         turnTime: 20,
                       ),
@@ -298,7 +298,7 @@ class IntiateGameDialogs {
           ),
           obscureText: true,
           onSubmitted: (value) {
-            if (value == '5l3i5y252j4c') { // You should replace this with a secure password check
+            if (value == 'Test123') { // You should replace this with a secure password check
               Navigator.of(context).pop();
               context.push(AppRoutes.unverifiedWordsView);
             } else {
@@ -314,7 +314,7 @@ class IntiateGameDialogs {
           TextButton(
             onPressed: () {
               final value = controller.text;
-              if (value == '5l3i5y252j4c') { // You should replace this with a secure password check
+              if (value == 'Test123') { // You should replace this with a secure password check
                 Navigator.of(context).pop();
                 context.push(AppRoutes.unverifiedWordsView);
               } else {
