@@ -53,6 +53,7 @@ class UnverifiedWordsView extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final words = context.read<AdminCubit>().unverifiedWords[index];
                     return Padding(
+                      key: ValueKey(words.date.toString()),
                       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                       child: InkWell(
                         onTap: () {

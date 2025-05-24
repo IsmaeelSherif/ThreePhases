@@ -41,7 +41,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
       if(category==categories.last){
         return;
       }
-      int wordsForCategory = (probability * totalWords).round();
+      int wordsForCategory = (probability * totalWords).floor();
       fetchFutures.add(_fetchWordsForCategory(
         categoriesCollection,
         category,

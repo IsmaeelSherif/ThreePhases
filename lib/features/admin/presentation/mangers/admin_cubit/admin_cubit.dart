@@ -28,6 +28,10 @@ class AdminCubit extends Cubit<AdminState> {
       emit(AdminVerifyWordsSuccess());
     });
   }
+  Future<void> updateWord(UnverifiedWordModel words,String word,String newWord) async {
+    words.words[words.words.indexOf(word)] = newWord;
+    emit(AdminLoaded());
+  }
   Future<void> removeWord(UnverifiedWordModel words,String word) async {
  
       words.words.remove(word);

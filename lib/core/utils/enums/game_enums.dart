@@ -7,9 +7,8 @@ enum GameCategory {
   item("Item"),
   people("People"),
   art("Art"),
-  customWords("Custom Words"),
-  
   other("Other"),
+  customWords("Custom Words"),
 ;
 
   final String value;

@@ -16,7 +16,7 @@ void main() async {
   );
   await setup();
   final WordIneserter wordIneserter = WordIneserter();
-  // // await wordIneserter.intiateWords();
+  // await wordIneserter.intiateWords();
 // await wordIneserter.insertMultipleLanguages(
 //   {
 //     'EnglishWord': ['Cat', 'Dog', 'Apple'],
