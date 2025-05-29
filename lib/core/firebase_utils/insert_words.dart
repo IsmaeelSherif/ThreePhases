@@ -636,28 +636,7 @@ List<List<String>> otherWords = [
   
 ];
 
-void countWords(){
-    int placesCount = 0;
-  int peopleCount = 0;
-  int emotionsCount = 0;
-  int technologiesCount = 0;
-  int artCount = 0;
-  int otherWordsCount = 0;
-  int toolsCount = 0;
-  int itemsCount = 0;
-  int foodCount = 0;
-  placesCount = places.length; 
-  peopleCount = people.length;
-  emotionsCount = emotions.length;
-  technologiesCount = technologies.length;
-  artCount = art.length;
-  otherWordsCount = otherWords.length;
-  toolsCount = tools.length;
-  itemsCount = items.length;
-  foodCount = food.length;
-  int allCount=placesCount+peopleCount+emotionsCount+technologiesCount+artCount+otherWordsCount+toolsCount+itemsCount+foodCount;
-  print('All words count: $allCount');
-}
+
 Future<void> intiateWords() async {
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
   final CollectionReference words = firestore.collection('allWords');

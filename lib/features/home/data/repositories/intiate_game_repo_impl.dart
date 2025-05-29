@@ -31,7 +31,6 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
       categoryProbabilities[categories[i]] = randomValues[i] / total;
     }
 
-    print(categoryProbabilities.toString());
 
     // Step 2: Fetch random words from each category in parallel
     List<WordsModel> allWords = [];
@@ -57,6 +56,7 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
         categories.last,
         lastCategoryWords,
         allWords,
+      
       )]);
     game.words = allWords;
   }
@@ -66,13 +66,16 @@ class IntiateGameRepoImpl implements IntiateGameRepo {
     String category,
     int wordsForCategory,
     List<WordsModel> allWords,
+
   ) async {
     final subWordsCollection = categoriesCollection.doc(category).collection('categoryWords');
 
     // Get last index
     final snapshot = await subWordsCollection.orderBy('index', descending: true).limit(1).get();
     final int lastIndex = snapshot.docs.isNotEmpty ? snapshot.docs.first['index'] as int : 0;
-
+    if(lastIndex<wordsForCategory){
+      wordsForCategory=lastIndex;
+    }
     // Generate unique random indexes
     final Set<int> randomIndexes = {};
     final random = Random();

@@ -28,6 +28,7 @@ class _GamesettingState extends State<Gamesetting> {
     int? v = int.tryParse(value);
     if (v == null) return;
     if (v < 1) v = 1;
+    if(v>100) v=100;
     if (v.toString() != value) {
       _wordsCountController.text = v.toString();
       _wordsCountController.selection = TextSelection.fromPosition(
