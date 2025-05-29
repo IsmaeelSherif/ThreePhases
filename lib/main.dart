@@ -15,7 +15,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await setup();
-  final WordIneserter wordIneserter = WordIneserter();
+  // final WordIneserter wordIneserter = WordIneserter();
+  //  wordIneserter.countWords();
   // await wordIneserter.intiateWords();
 // await wordIneserter.insertMultipleLanguages(
 //   {

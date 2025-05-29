@@ -131,7 +131,6 @@ List<List<String>> emotions = [
   ["حزين", "Sad", "Emotions"],
   ["غاضب", "Angry", "Emotions"],
   ["متحمس", "Excited", "Emotions"],
-  ["خائف", "Scared", "Emotions"],
   ["مندهش", "Surprised", "Emotions"],
   ["مرتبك", "Confused", "Emotions"],
   ["متعب", "Tired", "Emotions"],
@@ -169,7 +168,6 @@ List<List<String>> emotions = [
   ["جاد", "Serious", "Emotions"],
   ["مرتاب", "Suspicious", "Emotions"],
   ["مشمئز", "Disgusted", "Emotions"],
-  ["مندهش", "Surprised", "Emotions"],
   ["يشعر بعدم الاحترام", "Disrespected", "Emotions"],
   ["قوي", "Empowered", "Emotions"],
   ["غير واثق", "Insecure", "Emotions"],
@@ -180,7 +178,6 @@ List<List<String>> emotions = [
   ["معطاء", "Helpful", "Emotions"],
   ["طيب", "Kind", "Emotions"],
   ["ودود", "Friendly", "Emotions"],
-  ["خائف", "Fearful", "Emotions"],
   ["مرتاب", "Doubtful", "Emotions"],
   ["منفعل", "Irritated", "Emotions"],
   ["منزعج", "Upset", "Emotions"],
@@ -205,7 +202,6 @@ List<List<String>> technologies = [
   ["اللوحة الأم", "Motherboard", "Technology"],
   ["المعالج", "Processor", "Technology"],
   ["لوحة مفاتيح", "Keyboard", "Technology"],
-  ["فأرة", "Mouse", "Technology"],
   ["شاشة", "Monitor", "Technology"],
   ["طابعة", "Printer", "Technology"],
   ["ماسح ضوئي", "Scanner", "Technology"],
@@ -246,7 +242,6 @@ List<List<String>> technologies = [
   ["بث مباشر", "Streaming", "Technology"],
   ["بيانات", "Data", "Technology"],
   ["إشارة", "Signal", "Technology"],
-  ["بطارية", "Battery", "Technology"],
   ["تكنولوجيا", "Technology", "Technology"],
   ["رقمي", "Digital", "Technology"],
   ["تماثلي", "Analog", "Technology"],
@@ -264,18 +259,17 @@ List<List<String>> technologies = [
   ["قفل ذكي", "Smart Lock", "Technology"],
   ["ثلاجة ذكية", "Smart Fridge", "Technology"],
   ["سيارة كهربائية", "Electric Car", "Technology"],
-  ["محطة شحن", "Charging Station", "Technology"],
   ["روبوت تنظيف", "Robot Vacuum", "Technology"],
   ["تشفير", "Encryption", "Technology"],
   ["محرر الأكواد", "Code Editor", "Technology"],
   ["مترجم برمجي", "Compiler", "Technology"],
   ["الطرفية", "Terminal", "Technology"],
   ["إتش تي إم إل", "HTML", "Technology"],
-  ["موسع واي فاي", "Wi-Fi Extender", "Technology"],
   ["بطارية متنقلة", "Power Bank", "Technology"],
   ["قارئ كتب إلكترونية", "E-book Reader", "Technology"],
   ["خدمة بث", "Streaming Service", "Technology"]
 ];
+
 List<List<String>> art = [
   ["رسم", "Painting", "Art"],
   ["تخطيط", "Drawing", "Art"],
@@ -289,7 +283,6 @@ List<List<String>> art = [
   ["ألوان زيتية", "Oil Paint", "Art"],
   ["ألوان مائية", "Watercolor", "Art"],
   ["أكريليك", "Acrylic", "Art"],
-  ["قلم رصاص", "Pencil", "Art"],
   ["فحم", "Charcoal", "Art"],
   ["باستيل", "Pastel", "Art"],
   ["حبر", "Ink", "Art"],
@@ -301,11 +294,8 @@ List<List<String>> art = [
   ["كولاج", "Collage", "Art"],
   ["تصوير فوتوغرافي", "Photography", "Art"],
   ["فيلم", "Film", "Art"],
-  ["سينما", "Cinema", "Art"],
   ["مخرج", "Director", "Art"],
-  ["ممثل", "Actor", "Art"],
   ["ممثلة", "Actress", "Art"],
-  ["مسرح", "Theater", "Art"],
   ["خشبة المسرح", "Stage", "Art"],
   ["عرض مسرحي", "Performance", "Art"],
   ["مسرحية غنائية", "Musical", "Art"],
@@ -314,7 +304,6 @@ List<List<String>> art = [
   ["رقص", "Dance", "Art"],
   ["تصميم رقص", "Choreography", "Art"],
   ["زي", "Costume", "Art"],
-  ["مكياج", "Makeup", "Art"],
   ["إضاءة", "Lighting", "Art"],
   ["تصميم الديكور", "Set Design", "Art"],
   ["خزف", "Ceramics", "Art"],
@@ -327,7 +316,6 @@ List<List<String>> art = [
   ["أسلوب", "Style", "Art"],
   ["معرض", "Exhibition", "Art"],
   ["صالة عرض", "Gallery", "Art"],
-  ["متحف", "Museum", "Art"],
   ["بورتريه", "Portrait", "Art"],
   ["بورتريه ذاتي", "Self-Portrait", "Art"],
   ["طبيعة صامتة", "Still Life", "Art"],
@@ -439,7 +427,6 @@ List<List<String>> tools = [
   ["صواميل", "Bolts", "Tool"],
   ["غراء", "Glue", "Tool"],
   ["فرشاة طلاء", "Paintbrush", "Tool"],
-  ["رول طلاء", "Roller", "Tool"],
   ["آلة صنفرة", "Sander", "Tool"],
   ["سلم", "Ladder", "Tool"],
   ["عربة يدوية", "Wheelbarrow", "Tool"],
@@ -453,20 +440,16 @@ List<List<String>> tools = [
   ["صندوق أدوات", "Toolbox", "Tool"],
   ["قفازات عمل", "Work Gloves", "Tool"],
   ["مصباح يدوي", "Flashlight", "Tool"],
-  ["خوذة", "Helmet", "Tool"],
   ["نظارات أمان", "Safety Goggles", "Tool"],
   ["قاطعة أسلاك", "Wire Cutter", "Tool"],
   ["جهاز اختبار فولت", "Voltage Tester", "Tool"],
   ["جهاز قياس متعدد", "Multimeter", "Tool"],
   ["كاوية لحام", "Soldering Iron", "Tool"],
   ["شريط لاصق", "Tape", "Tool"],
-  ["دباسة", "Stapler", "Tool"],
   ["مقص", "Scissors", "Tool"],
   ["آلة لحام", "Welding Machine", "Tool"],
   ["مطحنة", "Grinder", "Tool"],
   ["رأس مقبس", "Socket", "Tool"],
-  ["مفتاح ألين", "Allen Key", "Tool"],
-  ["مفتاح سداسي", "Hex Wrench", "Tool"],
   ["مبرد", "File", "Tool"],
   ["ملزمة", "Vice", "Tool"],
   ["منضدة", "Bench", "Tool"],
@@ -482,7 +465,6 @@ List<List<String>> tools = [
   ["مسدس حراري", "Heat Gun", "Tool"],
   ["مسدس غراء ساخن", "Hot Glue Gun", "Tool"],
   ["عصا قياس", "Measuring Stick", "Tool"],
-  ["فرشاة", "Brush", "Tool"],
   ["دلو", "Bucket", "Tool"],
   ["مجرفة صغيرة", "Spade", "Tool"],
   ["سندان", "Anvil", "Tool"],
@@ -496,7 +478,6 @@ List<List<String>> tools = [
   ["ضاغط هواء", "Air Compressor", "Tool"],
   ["رشاش طلاء", "Paint Sprayer", "Tool"],
   ["مسدس مسامير", "Nail Gun", "Tool"],
-  ["قفازات", "Gloves", "Tool"],
   ["مريلة", "Apron", "Tool"],
   ["مشبك", "Clamp", "Tool"],
   ["ورق صنفرة", "Sandpaper", "Tool"],
@@ -508,8 +489,6 @@ List<List<String>> tools = [
 
 List<List<String>> items = [
   ["هاتف", "Phone", "Item"],
-  ["لاب توب", "Laptop", "Item"],
-  ["جهاز لوحي", "Tablet", "Item"],
   ["كتاب", "Book", "Item"],
   ["قلم", "Pen", "Item"],
   ["قلم رصاص", "Pencil", "Item"],
@@ -530,10 +509,7 @@ List<List<String>> items = [
   ["كوب", "Cup", "Item"],
   ["مج", "Mug", "Item"],
   ["مظلة", "Umbrella", "Item"],
-  ["شاحن", "Charger", "Item"],
-  ["سماعات رأس", "Headphones", "Item"],
   ["سماعات أذن", "Earbuds", "Item"],
-  ["كاميرا", "Camera", "Item"],
   ["ريموت", "Remote", "Item"],
   ["تلفاز", "Television", "Item"],
   ["فرشاة أسنان", "Toothbrush", "Item"],
@@ -568,10 +544,7 @@ List<List<String>> items = [
   ["آلة حاسبة", "Calculator", "Item"],
   ["تقويم", "Calendar", "Item"],
   ["فأرة", "Mouse", "Item"],
-  ["لوحة مفاتيح", "Keyboard", "Item"],
-  ["يو إس بي", "USB", "Item"],
   ["فلاشة", "Flash Drive", "Item"],
-  ["باور بانك", "Power Bank", "Item"],
   ["سبيكر", "Speaker", "Item"],
   ["ترايبود", "Tripod", "Item"],
   ["ورق دفتر", "Notebook Paper", "Item"],
@@ -581,7 +554,6 @@ List<List<String>> items = [
   ["قلم تمييز", "Highlighter", "Item"],
   ["ماركر", "Marker", "Item"],
   ["دباسة", "Stapler", "Item"],
-  ["شريط لاصق", "Tape", "Item"],
   ["بطارية", "Battery", "Item"],
   ["ريموت مروحة", "Fan Remote", "Item"],
   ["يد تحكم ألعاب", "Game Controller", "Item"],
@@ -605,7 +577,6 @@ List<List<String>> otherWords = [
   ["مطر", "Rain", "Other"],
   ["ثلج", "Snow", "Other"],
   ["نار", "Fire", "Other"],
-  ["ماء", "Water", "Other"],
   ["أرض", "Earth", "Other"],
   ["سماء", "Sky", "Other"],
   ["سحابة", "Cloud", "Other"],
@@ -613,7 +584,7 @@ List<List<String>> otherWords = [
   ["شمس", "Sun", "Other"],
   ["قمر", "Moon", "Other"],
   ["وقت", "Time", "Other"],
-  ["ذكرى", "Memory", "Other"],
+  ["ذاكرة", "Memory", "Other"],
   ["أمل", "Hope", "Other"],
   ["خوف", "Fear", "Other"],
   ["فرح", "Joy", "Other"],
@@ -624,8 +595,6 @@ List<List<String>> otherWords = [
   ["سلام", "Peace", "Other"],
   ["حرب", "War", "Other"],
   ["طاقة", "Energy", "Other"],
-  ["حب", "Love", "Other"],
-  ["كراهية", "Hate", "Other"],
   ["صداقة", "Friendship", "Other"],
   ["قدر", "Destiny", "Other"],
   ["مصير", "Fate", "Other"],
@@ -642,14 +611,53 @@ List<List<String>> otherWords = [
   ["لعبة", "Game", "Other"],
   ["فرصة", "Chance", "Other"],
   ["عملة", "Coin", "Other"],
-  ["إشارة", "Signal", "Other"],
   ["وميض", "Flash", "Other"],
-  ["مرآة", "Mirror", "Other"],
   ["فخ", "Trap", "Other"],
   ["لغز", "Puzzle", "Other"],
-  ["رمز", "Code", "Other"],
-  ["خريطة", "Map", "Other"]
+  ["كلمة السر", "PassWord", "Other"],
+  ["خريطة", "Map", "Other"],
+  ["منطقة", "Area", "Other"],
+  ["ابتكار", "Innovation", "Other"],
+  ["تطوير", "Development", "Other"],
+  ["تحدي", "Challenge", "Other"],
+  ["مشكلة", "Problem", "Other"],
+  ["حل", "Solution", "Other"],
+  ["خيال", "Imagination", "Other"],
+  ["أفكار", "Ideas", "Other"],
+  ["اكتشاف", "Discovery", "Other"],
+  ["مستقبل", "Future", "Other"],
+  ["ماضي", "Past", "Other"],
+  ["حاجة", "Need", "Other"],
+  ["ضرورة", "Requirement", "Other"],
+  ["مهم", "Important", "Other"],
+  ["مهمة", "Task", "Other"],
+  ["تحويل", "Transformation", "Other"],
+  ["إلهام", "Inspiration", "Other"], 
+  
 ];
+
+void countWords(){
+    int placesCount = 0;
+  int peopleCount = 0;
+  int emotionsCount = 0;
+  int technologiesCount = 0;
+  int artCount = 0;
+  int otherWordsCount = 0;
+  int toolsCount = 0;
+  int itemsCount = 0;
+  int foodCount = 0;
+  placesCount = places.length; 
+  peopleCount = people.length;
+  emotionsCount = emotions.length;
+  technologiesCount = technologies.length;
+  artCount = art.length;
+  otherWordsCount = otherWords.length;
+  toolsCount = tools.length;
+  itemsCount = items.length;
+  foodCount = food.length;
+  int allCount=placesCount+peopleCount+emotionsCount+technologiesCount+artCount+otherWordsCount+toolsCount+itemsCount+foodCount;
+  print('All words count: $allCount');
+}
 Future<void> intiateWords() async {
   final FirebaseFirestore firestore = GetIt.instance.get<FirebaseFirestore>();
   final CollectionReference words = firestore.collection('allWords');
