@@ -2,18 +2,23 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ntp/ntp.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/features/game/data/repo/game_repo.dart';
+// import 'package:timezone/browser.dart' as tz;
 
 part 'game_state.dart';
 
 class GameCubit extends Cubit<GameState> {
   GameCubit() : super(GameInitial());
-
+  DateTime? globalTime;
   final gameRepo = GetIt.instance.get<GameRepo>();
   bool isTurnStarted = false;
   bool isDialogOpen = false;
-  void startTurn(GameModel game) {
+  initDate() async {
+    globalTime = await NTP.now();
+  }
+  void startTurn(GameModel game) async{
     // emit(GameLoading());
     isTurnStarted = true;
     if (game.turnEndsTime != null) {
@@ -22,10 +27,11 @@ class GameCubit extends Cubit<GameState> {
     }
     game.turnFinished = false;
     game.turnAvailable = true;
-    game.turnEndsTime = DateTime.now().add(Duration(seconds: game.turnTime));
+    final now = await NTP.now();
+    game.turnEndsTime = now.add(Duration(seconds: game.turnTime));
     game.lastTurnDoneWords = [];
     game.lastWordIndex = -1;
-
+    globalTime = now;
     nextWord(game);
   }
 

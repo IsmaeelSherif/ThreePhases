@@ -45,6 +45,8 @@ dependencies:
   shared_preferences: ^2.5.3
   device_preview: ^1.2.0
   fluttertoast: ^8.2.12
+  ntp: ^2.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -70,7 +72,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/rings/timer.mp3
-
+    - assets/rings/done_word.ogg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

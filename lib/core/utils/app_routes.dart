@@ -65,7 +65,7 @@ class AppRoutes {
         builder: (context, state) {
           final game = state.extra as GameModel;
           return BlocProvider(
-            create: (context) => GameCubit(),
+            create: (context) => GameCubit()..initDate(),
             child: JoinedGameView(game: game),
           );
         },

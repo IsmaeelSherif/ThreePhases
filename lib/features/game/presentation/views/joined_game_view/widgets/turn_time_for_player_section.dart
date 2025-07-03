@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ntp/ntp.dart';
 import 'package:three_phases/core/models/game_model.dart';
 import 'package:three_phases/features/game/presentation/manger/game_cubit/game_cubit.dart';
 
+
 class TurnTimer extends StatefulWidget {
   final GameModel game;
-
   const TurnTimer({super.key, required this.game});
 
   @override
@@ -24,14 +25,18 @@ class _TurnTimerState extends State<TurnTimer> {
     _startTimer();
   }
 
-  void _startTimer() {
+  void _startTimer() async {
     final game = widget.game;
     final endTime = game.turnEndsTime;
 
     if (endTime == null) return;
-
-    final now = DateTime.now();
-    final difference = endTime.difference(now).inSeconds;
+    // await tz.initializeTimeZone();
+    final now = context.read<GameCubit>().globalTime;
+    print("nowInEgypt");
+    print(now);
+    int difference;
+    
+    now !=null? difference = endTime.difference(now).inSeconds: difference = -1;
     timeLeft = difference > 0 ? difference : 0;
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {

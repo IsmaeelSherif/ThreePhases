@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:three_phases/core/models/game_model.dart';
@@ -15,6 +16,10 @@ class NextWordButton extends StatefulWidget {
 }
 
 class NextWordButtonState extends State<NextWordButton> {
+    final _audioPlayer = AudioPlayer();
+  void _playSound(){
+       _audioPlayer.play(AssetSource('rings/done_word.ogg'));
+  }
   DateTime? _lastPressedTime;
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,7 @@ class NextWordButtonState extends State<NextWordButton> {
             gameCubit.nextWord(widget.game);
             _lastPressedTime = DateTime.now();
             gameCubit.isDialogOpen = false;
+            _playSound();
           },
           onCancel: () {
             gameCubit.isDialogOpen = false;

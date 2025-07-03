@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:ntp/ntp.dart';
 import 'package:three_phases/core/utils/app_colors.dart';
 import 'package:three_phases/core/utils/app_routes.dart';
 import 'package:three_phases/core/utils/app_strings.dart';
@@ -13,6 +14,7 @@ import 'package:three_phases/features/game/presentation/views/hosted_game_view/w
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/game_timer.dart';
 import 'package:three_phases/features/game/presentation/views/hosted_game_view/widgets/last_word_proccess_section.dart';
 import 'package:three_phases/features/game/presentation/views/joined_game_view/widgets/custom_turn_button.dart';
+
 
 class HostedGameView extends StatelessWidget {
   const HostedGameView({super.key, required this.game});
@@ -260,49 +262,49 @@ class TimeLeftWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (updatedGame.turnEndsTime == null) {
+      return const SizedBox();
+    }
+
     return StreamBuilder(
-      stream: Stream.periodic(
-        const Duration(seconds: 1),
-      ),
+      stream: Stream.periodic(const Duration(seconds: 1)),
       builder: (context, snapshot) {
-        if (updatedGame.turnEndsTime == null) {
-          return const SizedBox();
-        }
-    
-        final now = DateTime.now();
-        final end = updatedGame.turnEndsTime!;
-        final difference = end.difference(now);
-    
-        if (difference.isNegative) {
-          updatedGame.turnFinished = true;
-          updatedGame.turnAvailable = false;
-          updatedGame.turnEndsTime = null;
-          context.read<GameCubit>().updateGame(updatedGame);
-          return Text(
-            "Time's up!",
-            style: Theme.of(context)
-                .textTheme
-                .bodyLarge
-                ?.copyWith(color: Colors.red),
-          );
-        }
-    
-        final minutes = difference.inMinutes
-            .remainder(60)
-            .toString()
-            .padLeft(2, '0');
-        final seconds = difference.inSeconds
-            .remainder(60)
-            .toString()
-            .padLeft(2, '0');
-    
-        return Text(
-          "${AppStrings.timeLeft}: $minutes:$seconds",
-          textAlign: TextAlign.center,
-          style:
-              Theme.of(
-                context,
-              ).textTheme.bodyLarge,
+        // Use a FutureBuilder to get the NTP time
+        return FutureBuilder<DateTime>(
+          future: NTP.now(),
+          builder: (context, ntpSnapshot) {
+            if (!ntpSnapshot.hasData) {
+              return const CircularProgressIndicator();
+            }
+            final now = ntpSnapshot.data!;
+            final end = updatedGame.turnEndsTime!;
+            final difference = end.difference(now);
+
+            if (difference.isNegative) {
+              return Text(
+                "Time's up!",
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.copyWith(color: Colors.red),
+              );
+            }
+
+            final minutes = difference.inMinutes
+                .remainder(60)
+                .toString()
+                .padLeft(2, '0');
+            final seconds = difference.inSeconds
+                .remainder(60)
+                .toString()
+                .padLeft(2, '0');
+
+            return Text(
+              "${AppStrings.timeLeft}: $minutes:$seconds",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            );
+          },
         );
       },
     );
