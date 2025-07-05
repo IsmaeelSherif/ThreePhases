@@ -335,11 +335,14 @@ class HostedGameAppBar extends StatelessWidget {
           GoRouter.of(context).pop();
         },
       ),
-      title: Text(
-        "${AppStrings.gameCode} ${game.code}",
-        style: Theme.of(
-          context,
-        ).textTheme.bodyMedium?.copyWith(fontSize: 18, color: Colors.white),
+      title: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          "${AppStrings.gameCode} ${game.code}",
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontSize: 18, color: Colors.white),
+        ),
       ),
       actions: [
         Padding(
