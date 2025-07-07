@@ -95,7 +95,7 @@ class _WordsDoneViewState extends State<WordsDoneView> {
                                       ),
                                     ),
                                     title: Text(
-                                      "${item["engWord"]} - ${item["arWord"]}",
+                                      "${item["engWord"]} ${item["arWord"].isNotEmpty ? " / ${item["arWord"]}" : ""}",
                                       style:
                                           Theme.of(context).textTheme.titleMedium,
                                     ),
